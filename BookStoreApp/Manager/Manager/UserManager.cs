@@ -10,20 +10,32 @@ namespace Manager.Manager
     public class UserManager : IUserManager
     {
         private readonly IUserRepository repository;
-
         public UserManager(IUserRepository repository)
         {
             this.repository = repository;
         }
-        public int Login(RegisterModel userDetails)
+
+        public int Register(RegisterModel userDetails)
         {
             try
             {
-                return this.repository.Login(userDetails);
+                return this.repository.Register(userDetails);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+
+        }
+        public RegisterModel Login(LoginModel logindata)
+        {
+            try
+            {
+                return this.repository.Login(logindata);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }
