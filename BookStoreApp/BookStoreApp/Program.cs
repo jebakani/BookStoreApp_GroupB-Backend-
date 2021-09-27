@@ -14,6 +14,7 @@ namespace BookStoreApp
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+            Console.WriteLine("asdf");
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
