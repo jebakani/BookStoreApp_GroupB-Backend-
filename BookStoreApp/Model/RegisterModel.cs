@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model
 {
-    class RegisterModel
+   public class RegisterModel
     {
         [Required]
         public string CustomerName { get; set; }

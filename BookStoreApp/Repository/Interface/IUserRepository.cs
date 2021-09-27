@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Repository.Interface
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
+       public int Login(RegisterModel userDetails);
     }
 }
