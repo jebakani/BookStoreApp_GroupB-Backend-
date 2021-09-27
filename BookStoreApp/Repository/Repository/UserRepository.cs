@@ -12,7 +12,7 @@ namespace Repository.Repository
         public static string connectionString = "Server=localhost;Database=master;Trusted_Connection=True;";
        
         SqlConnection sqlConnection = new SqlConnection(connectionString);
-        public int Login(RegisterModel userDetails)
+        public int Register(RegisterModel userDetails)
         {   
             using (sqlConnection) 
 

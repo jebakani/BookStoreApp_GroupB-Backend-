@@ -7,6 +7,6 @@ namespace Manager.Inteface
 {
     public interface IUserManager
     { 
-        public int Login(RegisterModel userDetails);
+        public int Register(RegisterModel userDetails);
     }
 }

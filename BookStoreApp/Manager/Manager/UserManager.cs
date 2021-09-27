@@ -15,11 +15,11 @@ namespace Manager.Manager
         {
             this.repository = repository;
         }
-        public int Login(RegisterModel userDetails)
+        public int Register(RegisterModel userDetails)
         {
             try
             {
-                return this.repository.Login(userDetails);
+                return this.repository.Register(userDetails);
             }
             catch (Exception ex)
             {

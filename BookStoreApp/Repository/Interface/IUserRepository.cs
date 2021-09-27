@@ -7,6 +7,6 @@ namespace Repository.Interface
 {
     public interface IUserRepository
     {
-       public int Login(RegisterModel userDetails);
+       public int Register(RegisterModel userDetails);
     }
 }
