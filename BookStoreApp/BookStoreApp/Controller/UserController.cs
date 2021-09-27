@@ -22,8 +22,8 @@ namespace BookStoreApp.Controller
         }
 
         [HttpPost]
-        [Route("api/register")]
-        public IActionResult ResetPassword([FromBody] RegisterModel userDetails)
+        [Route("register")]
+        public IActionResult Register([FromBody] RegisterModel userDetails)
         {
             try
             {
