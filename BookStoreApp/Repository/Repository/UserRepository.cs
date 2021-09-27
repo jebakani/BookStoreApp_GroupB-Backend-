@@ -11,7 +11,7 @@ namespace Repository.Repository
 
     public class UserRepository : IUserRepository
     {
-        public static string connectionString = @"Data Source=localhost;Initial Catalog=BookStore;Integrated Security=True";
+        public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BookStore;";
 
         SqlConnection sqlConnection = new SqlConnection(connectionString);
         public int Register(RegisterModel userDetails)
@@ -56,32 +56,36 @@ namespace Repository.Repository
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("Email", loginData.Email);
-            cmd.Parameters.AddWithValue("Password", loginData.Password);
-            var returnParameter = cmd.Parameters.Add("@Result", SqlDbType.Int);
-            returnParameter.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.AddWithValue("@EmailId", loginData.Email);
+            cmd.Parameters.AddWithValue("@Password", loginData.Password);
+               var returnedSQLParameter = cmd.Parameters.Add("@result", SqlDbType.Int);
+                returnedSQLParameter.Direction = ParameterDirection.ReturnValue;
 
-            RegisterModel customer = new RegisterModel();
-            SqlDataReader rd = cmd.ExecuteReader();
-            var result = returnParameter.Value;
+                RegisterModel customer = new RegisterModel();
+                SqlDataReader rd = cmd.ExecuteReader();
+                //var result = (int)returnedSQLParameter.Value;
 
-            if (result.Equals(3))
-            {
-                throw new Exception("Email not registered");
-            }
-            if (rd.Read())
-            {
+                //if ( result.Equals(3))
+                //{
+                //    throw new Exception("Email not registered");
+                //}
+                if (rd.Read())
+                {
                 customer.CustomerId = rd["userId"] == DBNull.Value ? default : rd.GetInt32("userId");
                 customer.CustomerName = rd["FullName"] == DBNull.Value ? default : rd.GetString("FullName");
                 customer.PhoneNumber = rd["Phone"] == DBNull.Value ? default : rd.GetInt64("Phone");
-                customer.Email = rd["Email"] == DBNull.Value ? default : rd.GetString("Email");
-                customer.PhoneNumber = rd["PhoneNumber"] == DBNull.Value ? default : rd.GetInt64("PhoneNumber");
-            }
+                customer.Email = rd["EmailId"] == DBNull.Value ? default : rd.GetString("EmailId");
+                customer.Password = rd["Password"] == DBNull.Value ? default : rd.GetString("Password");
+                }
             return customer;
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+            finally
+            {
+                sqlConnection.Close()
             }
         }
        

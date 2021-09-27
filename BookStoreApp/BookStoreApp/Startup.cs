@@ -67,8 +67,8 @@ namespace BookStoreApp
                        name: "default",
                        pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+           app.UseSwagger();
+           app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "BookStore (V 1.0)");
             });
