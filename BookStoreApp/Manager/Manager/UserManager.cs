@@ -14,7 +14,6 @@ namespace Manager.Manager
         {
             this.repository = repository;
         }
-
         public int Register(RegisterModel userDetails)
         {
             try
