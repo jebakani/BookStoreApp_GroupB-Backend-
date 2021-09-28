@@ -67,18 +67,18 @@ namespace BookStoreApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "BookStore (V 1.0)");
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                        name: "default",
                        pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-           app.UseSwagger();
-           app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "BookStore (V 1.0)");
-            });
+          
 
         }
     }
