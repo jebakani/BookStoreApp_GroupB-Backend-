@@ -9,7 +9,7 @@ namespace Model
     {
         [Required]
         
-        public string UserId { get; set; }
+        public int UserId { get; set; }
 
 
         [Required]

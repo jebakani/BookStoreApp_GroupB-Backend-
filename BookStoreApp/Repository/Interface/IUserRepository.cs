@@ -14,6 +14,7 @@ namespace Repository.Interface
         DataResponseModel ForgetPassword(string email);
 
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
+       
 
     }
 }

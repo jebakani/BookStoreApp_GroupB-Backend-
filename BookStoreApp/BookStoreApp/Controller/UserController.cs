@@ -18,7 +18,7 @@ namespace BookStoreApp.Controller
         public UserController(IUserManager manager)
         {
             this.manager = manager;
-            
+
         }
 
         [HttpPost]
@@ -44,7 +44,8 @@ namespace BookStoreApp.Controller
 
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
 
-            } }
+            }
+        }
 
         [HttpPost]
         [Route("login")]
@@ -53,17 +54,17 @@ namespace BookStoreApp.Controller
             var result = this.manager.Login(loginData);
             try
             {
-                 if(result!=null)
+                if (result != null)
                 {
-                    return this.Ok(new  { Status = true, Message = "Login Successful !" ,Data=result});
+                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = result });
 
                 }
-                 else
+                else
                 {
                     return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Incorrect password" });
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
@@ -77,11 +78,11 @@ namespace BookStoreApp.Controller
             {
                 var result = this.manager.ForgetPassword(email);
 
-                if (result.CustomerId >0)
+                if (result.CustomerId > 0)
                 {
 
                     ////Creates a OkResult object that produces an empty Status200OK response.
-                    return this.Ok(new ResponseModel<DataResponseModel>() { Status = false, Message = result.message ,Data=result });
+                    return this.Ok(new ResponseModel<DataResponseModel>() { Status = false, Message = result.message, Data = result });
                 }
                 else
                 {
@@ -116,7 +117,8 @@ namespace BookStoreApp.Controller
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
-        }
 
+        }
+       
     }
 }
