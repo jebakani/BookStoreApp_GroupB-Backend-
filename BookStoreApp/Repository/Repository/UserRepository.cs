@@ -14,7 +14,7 @@ namespace Repository.Repository
 
     public class UserRepository : IUserRepository
     {
-        public static string connectionString = @"Data Source=localhost;Initial Catalog=BookStore;Integrated Security=True";
+        public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BookStore;Integrated Security=True";
 
         SqlConnection sqlConnection = new SqlConnection(connectionString);
         public bool Register(RegisterModel userDetails)
@@ -117,7 +117,7 @@ namespace Repository.Repository
                 cmd.Parameters.Add("@result", SqlDbType.Int);
                 cmd.Parameters["@result"].Direction = ParameterDirection.Output;
                 cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@userId"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 var result = cmd.Parameters["@userId"].Value;
 
@@ -300,9 +300,40 @@ namespace Repository.Repository
                 {
                     sqlConnection.Close();
                 }
-        
         }
-    }
+        public UserDetailsModel GetUserDetails(int userId)
+        {
+            try
+            {
+                sqlConnection.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[GetUSerDetails]" ,sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                UserDetailsModel userDetail = new UserDetailsModel();
+                SqlDataReader rd = cmd.ExecuteReader();
+                if (rd.Read())
+                {
+                    userDetail.AddressId = rd.GetInt32("AddressId");
+                    userDetail.Address = rd.GetString("address");
+                    userDetail.City = rd.GetString("city").ToString();
+                    userDetail.State = rd.GetString("state");
+                    userDetail.Type = rd.GetString("type");
+                }
+                return userDetail;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+             finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+    
+     }
 }
 
 

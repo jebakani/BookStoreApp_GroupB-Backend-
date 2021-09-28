@@ -79,5 +79,16 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public UserDetailsModel GetUserDetails(int userId)
+        {
+            try
+            {
+                return this.repository.GetUserDetails(userId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
