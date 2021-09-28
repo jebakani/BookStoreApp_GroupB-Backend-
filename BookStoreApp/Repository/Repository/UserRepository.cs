@@ -72,7 +72,7 @@ namespace Repository.Repository
                 cmd.Parameters.AddWithValue("@EmailId", loginData.Email);
                 cmd.Parameters.AddWithValue("@Password", encodedpassword);
                 var returnedSQLParameter = cmd.Parameters.Add("@result", SqlDbType.Int);
-                returnedSQLParameter.Direction = ParameterDirection.ReturnValue;
+                returnedSQLParameter.Direction = ParameterDirection.Output;
 
                 RegisterModel customer = new RegisterModel();
                 SqlDataReader rd = cmd.ExecuteReader();
@@ -84,11 +84,11 @@ namespace Repository.Repository
                 //}
                 if (rd.Read())
                 {
-                    customer.CustomerId = rd["userId"] == DBNull.Value ? default : rd.GetInt32("userId");
-                    customer.CustomerName = rd["FullName"] == DBNull.Value ? default : rd.GetString("FullName");
-                    customer.PhoneNumber = rd["Phone"] == DBNull.Value ? default : rd.GetString("Phone");
-                    customer.Email = rd["EmailId"] == DBNull.Value ? default : rd.GetString("EmailId");
-                    customer.Password = rd["Password"] == DBNull.Value ? default : rd.GetString("Password");
+                    customer.CustomerId = rd.GetInt32("userId");
+                    customer.CustomerName =rd.GetString("FullName");
+                    customer.PhoneNumber = rd.GetInt64("Phone").ToString();
+                    customer.Email =rd.GetString("EmailId");
+                    customer.Password =rd.GetString("Password");
                 }
                 return customer;
             }

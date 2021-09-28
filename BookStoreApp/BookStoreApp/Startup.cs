@@ -72,6 +72,7 @@ namespace BookStoreApp
             {
                 c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "BookStore (V 1.0)");
             });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
