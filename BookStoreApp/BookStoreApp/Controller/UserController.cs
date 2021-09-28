@@ -119,6 +119,31 @@ namespace BookStoreApp.Controller
             }
 
         }
-       
+        [HttpPost]
+        [Route("userdetails")]
+        public IActionResult AddUserDetails([FromBody] UserDetailsModel userDetails)
+        {
+            try
+            {
+                var result = this.manager.AddUserDetails(userDetails);
+                if (result)
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New UserDetails Successfully !" });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to add user Details, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
+
     }
 }

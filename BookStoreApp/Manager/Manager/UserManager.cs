@@ -67,6 +67,17 @@ namespace Manager.Manager
 
         }
 
-       
+        public bool AddUserDetails(UserDetailsModel userDetails)
+        {
+            try
+            {
+                return this.repository.AddUserDetails(userDetails);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

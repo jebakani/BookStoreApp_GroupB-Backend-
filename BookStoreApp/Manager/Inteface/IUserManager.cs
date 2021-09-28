@@ -15,6 +15,7 @@ namespace Manager.Inteface
         DataResponseModel ForgetPassword(string email);
 
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
+        public bool AddUserDetails(UserDetailsModel userDetails);
 
     }
 }
