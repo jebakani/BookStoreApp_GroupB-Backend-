@@ -332,8 +332,45 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
-    
-     }
+        public bool EditAddress(UserDetailsModel userDetails)
+        {
+            using (sqlConnection)
+
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.UpdateUserDetails", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+
+                    sqlCommand.Parameters.AddWithValue("@address", userDetails.Address);
+                    sqlCommand.Parameters.AddWithValue("@city", userDetails.City);
+                    sqlCommand.Parameters.AddWithValue("@state", userDetails.State);
+                    sqlCommand.Parameters.AddWithValue("@type", userDetails.Type);
+                    sqlCommand.Parameters.AddWithValue("@addressID", userDetails.AddressId);
+                    sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = sqlCommand.Parameters["@result"].Value;
+                    if (result.Equals(1))
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+
+    }
 }
 
 

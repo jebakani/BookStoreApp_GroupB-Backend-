@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Manager.Inteface;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Repository.Repository
 {
-    class BookRepository
+   public class BookRepository:IBookRepository
     {
     }
 }

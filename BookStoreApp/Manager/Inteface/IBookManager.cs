@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Manager.Inteface
 {
-    interface IBookManager
+    public interface IBookManager
     {
     }
 }

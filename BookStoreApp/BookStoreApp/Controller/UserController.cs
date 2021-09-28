@@ -166,6 +166,28 @@ namespace BookStoreApp.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
+        [HttpPost]
+        [Route("EditAddress")]
+        public IActionResult EditAddress([FromBody]UserDetailsModel details)
+        {
+            var result = this.manager.EditAddress(details);
+            try
+            {
+                if (result)
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Address updated successfully"});
+
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Address updation fails" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
+            }
+        }
 
     }
 }

@@ -18,6 +18,7 @@ namespace Manager.Inteface
         public bool AddUserDetails(UserDetailsModel userDetails);
 
         UserDetailsModel GetUserDetails(int userId);
+        bool EditAddress(UserDetailsModel details);
 
     }
 }

@@ -90,5 +90,17 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public  bool EditAddress(UserDetailsModel details)
+        {
+            try
+            {
+                return this.repository.EditAddress(details);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
     }
 }
