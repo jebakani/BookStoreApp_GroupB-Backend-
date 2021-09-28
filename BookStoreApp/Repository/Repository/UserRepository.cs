@@ -20,6 +20,7 @@ namespace Repository.Repository
 
                 try
                 {
+                    var password = this.EncryptPassword(userDetails.Password);
                     SqlCommand sqlCommand = new SqlCommand("dbo.InsertIntoUsers", sqlConnection);
 
                     sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
@@ -28,7 +29,7 @@ namespace Repository.Repository
 
                     sqlCommand.Parameters.AddWithValue("@FullName", userDetails.CustomerName);
                     sqlCommand.Parameters.AddWithValue("@EmailId", userDetails.Email);
-                    sqlCommand.Parameters.AddWithValue("@Password", userDetails.Password);
+                    sqlCommand.Parameters.AddWithValue("@Password", password);
                     sqlCommand.Parameters.AddWithValue("@Phone", userDetails.PhoneNumber);
 
                     int result = sqlCommand.ExecuteNonQuery();
@@ -47,18 +48,30 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
+        public string EncryptPassword(string password)
+        {
+            ////encodes Unicode characters into a sequence of one to four bytes per character
+            var passwordInBytes = Encoding.UTF8.GetBytes(password);
 
+            ////Converts a subset of an array of 8-bit unsigned integers to its equivalent string representation that is encoded with base-64 digits
+            string encodedPassword = Convert.ToBase64String(passwordInBytes);
+
+            ////returns the encoded pasword
+            return encodedPassword;
+        }
         public RegisterModel Login(LoginModel loginData)
         {
-            try { 
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand("[dbo].[UserLogin]", sqlConnection)
+            try
             {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@EmailId", loginData.Email);
-            cmd.Parameters.AddWithValue("@Password", loginData.Password);
-               var returnedSQLParameter = cmd.Parameters.Add("@result", SqlDbType.Int);
+                var encodedpassword = this.EncryptPassword(loginData.Password);
+                sqlConnection.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[UserLogin]", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@EmailId", loginData.Email);
+                cmd.Parameters.AddWithValue("@Password", encodedpassword);
+                var returnedSQLParameter = cmd.Parameters.Add("@result", SqlDbType.Int);
                 returnedSQLParameter.Direction = ParameterDirection.ReturnValue;
 
                 RegisterModel customer = new RegisterModel();
@@ -71,13 +84,13 @@ namespace Repository.Repository
                 //}
                 if (rd.Read())
                 {
-                customer.CustomerId = rd["userId"] == DBNull.Value ? default : rd.GetInt32("userId");
-                customer.CustomerName = rd["FullName"] == DBNull.Value ? default : rd.GetString("FullName");
-                customer.PhoneNumber = rd["Phone"] == DBNull.Value ? default : rd.GetInt64("Phone");
-                customer.Email = rd["EmailId"] == DBNull.Value ? default : rd.GetString("EmailId");
-                customer.Password = rd["Password"] == DBNull.Value ? default : rd.GetString("Password");
+                    customer.CustomerId = rd["userId"] == DBNull.Value ? default : rd.GetInt32("userId");
+                    customer.CustomerName = rd["FullName"] == DBNull.Value ? default : rd.GetString("FullName");
+                    customer.PhoneNumber = rd["Phone"] == DBNull.Value ? default : rd.GetString("Phone");
+                    customer.Email = rd["EmailId"] == DBNull.Value ? default : rd.GetString("EmailId");
+                    customer.Password = rd["Password"] == DBNull.Value ? default : rd.GetString("Password");
                 }
-            return customer;
+                return customer;
             }
             catch (Exception e)
             {
@@ -85,10 +98,10 @@ namespace Repository.Repository
             }
             finally
             {
-                sqlConnection.Close()
+                sqlConnection.Close();
             }
         }
-       
+
     }
 
 }

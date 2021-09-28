@@ -1,34 +1,41 @@
 ﻿USE [BookStore]
 GO
-/****** Object:  StoredProcedure [dbo].[UserLogin]    Script Date: 9/27/2021 3:52:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[UserLogin]    Script Date: 9/28/2021 8:05:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 ALTER PROCEDURE [dbo].[UserLogin]
-	@EmailId Varchar,
-	@Password Varchar,
+@EmailId Varchar(200),
+	@Password Varchar(50),
 	@result INT OUTPUT
 AS
 BEGIN
 BEGIN TRY
-   BEGIN TRAN
+   set @result=0;
+   
      IF(EXISTS(SELECT * FROM Users WHERE EmailId=@EmailId))
 	 begin
 	   if (Exists (select * from Users Where EmailId=@EmailId and Password=@Password))
 	     begin
-		  set @result=1
-		 end
+		  set @result=1 ;
+		  select * from Users where EmailId=@EmailId
+      	end
 	   else
 	     begin
-		   set @result=2
-		   end
+		   set @result=2;
+		   THROW  52000, 'Incorrect Password', 1;
+		 end
    	 end
-	 else
-	   begin
-	    set @result=3;
-	    end
+	 ELSE
+	 begin
+	   set @result=3;
+	   THROW 52000, 'Invalid Email id', 1;
+     end
 END TRY
-Begin Catch
-End catch
-END
+BEGIN CATCH  
+       SELECT  
+            ERROR_NUMBER() AS ErrorNumber  
+            ,ERROR_MESSAGE() AS ErrorMessage;  
+END CATCH;
+End

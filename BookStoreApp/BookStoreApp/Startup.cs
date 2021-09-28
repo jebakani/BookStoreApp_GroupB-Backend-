@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Bibliography;
 using Manager.Inteface;
 using Manager.Manager;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +31,14 @@ namespace BookStoreApp
             services.AddMvc();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowAllHeader",
+                    builder =>
+                    {
+                        builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                    });
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "BookStore", Description="Buy Books" ,Version = "1.0" });
@@ -52,6 +58,7 @@ namespace BookStoreApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors("AllowAllHeader");
 
             app.UseHttpsRedirection();
             
