@@ -35,7 +35,7 @@ namespace BookStoreApp
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<IBookManager, BookManager>();
 
-            services.AddCors(options =>
+            services.AddCors(options => 
             {
                 options.AddPolicy(name: "AllowAllHeader",
                     builder =>

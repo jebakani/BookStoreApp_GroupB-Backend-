@@ -119,7 +119,7 @@ namespace Repository.Repository
                 cmd.Parameters.Add("@userId", SqlDbType.Int);
                 cmd.Parameters["@result"].Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
-                var result = cmd.Parameters["@userId"].Value;
+                var result = cmd.Parameters["@result"].Value;
 
                 if (result != null&& result.Equals(1))
                 {
@@ -163,7 +163,6 @@ namespace Repository.Repository
                 messageQueue = MessageQueue.Create(@".\Private$\ResetPasswordQueue");
             }
         
-
             return messageQueue;
         }
         private bool SendEmail(string email)
