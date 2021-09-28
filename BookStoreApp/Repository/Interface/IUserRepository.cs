@@ -10,5 +10,6 @@ namespace Repository.Interface
 
         int Register(RegisterModel userDetails);
         RegisterModel Login(LoginModel loginData);
+        DataResponseModel ForgetPassword(string email);
     }
 }

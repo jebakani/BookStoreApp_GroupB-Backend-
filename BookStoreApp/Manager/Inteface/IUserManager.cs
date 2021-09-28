@@ -11,5 +11,7 @@ namespace Manager.Inteface
         public int Register(RegisterModel userDetails);
 
         RegisterModel Login(LoginModel loginData);
+        DataResponseModel ForgetPassword(string email);
+
     }
 }

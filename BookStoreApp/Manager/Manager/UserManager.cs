@@ -37,5 +37,18 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+       public DataResponseModel ForgetPassword(string email)
+        {
+
+            try
+            {
+                return this.repository.ForgetPassword(email);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
     }
 }
