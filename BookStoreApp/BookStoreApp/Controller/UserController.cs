@@ -95,7 +95,7 @@ namespace BookStoreApp.Controller
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("resetpassword")]
         public IActionResult ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
         {
