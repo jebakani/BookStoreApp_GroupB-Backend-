@@ -39,6 +39,7 @@ namespace BookStoreApp
                         builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                     });
             });
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "BookStore", Description="Buy Books" ,Version = "1.0" });
@@ -59,6 +60,11 @@ namespace BookStoreApp
                 app.UseHsts();
             }
             app.UseCors("AllowAllHeader");
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "BookStore (V 1.0)");
+            });
 
             app.UseHttpsRedirection();
             
@@ -67,11 +73,7 @@ namespace BookStoreApp
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "BookStore (V 1.0)");
-            });
+           
 
             app.UseEndpoints(endpoints =>
             {

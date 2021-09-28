@@ -14,7 +14,7 @@ namespace Manager.Manager
         {
             this.repository = repository;
         }
-        public int Register(RegisterModel userDetails)
+        public bool Register(RegisterModel userDetails)
         {
             try
             {
@@ -37,12 +37,13 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
-       public DataResponseModel ForgetPassword(string email)
-        {
 
+        public bool ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
             try
             {
-                return this.repository.ForgetPassword(email);
+                return this.repository.ResetPassword(resetPasswordModel);
+
             }
             catch (Exception e)
             {
@@ -50,5 +51,20 @@ namespace Manager.Manager
             }
         }
 
+        public DataResponseModel ForgetPassword(string email)
+        {
+
+            try
+            {
+                return this.repository.ForgetPassword(email);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+
+        }
     }
 }

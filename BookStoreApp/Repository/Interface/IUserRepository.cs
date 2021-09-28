@@ -8,8 +8,12 @@ namespace Repository.Interface
     public interface IUserRepository
     {
 
-        int Register(RegisterModel userDetails);
+        bool Register(RegisterModel userDetails);
         RegisterModel Login(LoginModel loginData);
+
         DataResponseModel ForgetPassword(string email);
+
+        bool ResetPassword(ResetPasswordModel resetPasswordModel);
+
     }
 }

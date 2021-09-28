@@ -27,8 +27,8 @@ namespace BookStoreApp.Controller
         {
             try
             {
-                int result = this.manager.Register(userDetails);
-                if (result == 1)
+                var result = this.manager.Register(userDetails);
+                if (result)
                 {
 
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New User Successfully !" });
@@ -69,6 +69,7 @@ namespace BookStoreApp.Controller
             }
         }
         [HttpPost]
+
         [Route("forgetPassword")]
         public IActionResult ForgetPassword(string email)
         {
@@ -91,6 +92,29 @@ namespace BookStoreApp.Controller
             catch (Exception ex)
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("resetpassword")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
+        {
+            var result = this.manager.ResetPassword(resetPasswordModel);
+            try
+            {
+                if (result)
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Successfully changed password !" });
+
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Try again !" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
 

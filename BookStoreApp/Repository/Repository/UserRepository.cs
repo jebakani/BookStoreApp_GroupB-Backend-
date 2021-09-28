@@ -11,12 +11,13 @@ using Experimental.System.Messaging;
 namespace Repository.Repository
 {
 
+
     public class UserRepository : IUserRepository
     {
-        public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BookStore;";
+        public static string connectionString = @"Data Source=localhost;Initial Catalog=BookStore;Integrated Security=True";
 
         SqlConnection sqlConnection = new SqlConnection(connectionString);
-        public int Register(RegisterModel userDetails)
+        public bool Register(RegisterModel userDetails)
         {
             using (sqlConnection)
 
@@ -36,9 +37,9 @@ namespace Repository.Repository
 
                     int result = sqlCommand.ExecuteNonQuery();
                     if (result > 0)
-                        return 1;
+                        return true;
                     else
-                        return 0;
+                        return false;
 
                 }
                 catch (Exception e)
@@ -161,6 +162,7 @@ namespace Repository.Repository
             {
                 messageQueue = MessageQueue.Create(@".\Private$\ResetPasswordQueue");
             }
+        
 
             return messageQueue;
         }
@@ -233,8 +235,40 @@ namespace Repository.Repository
             smtp.Send(mailMessage);
             return true;
         }
+        public bool ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            using (sqlConnection)
+                try
+                {
+                    //passing query in terms of stored procedure
+                    SqlCommand sqlCommand = new SqlCommand("[dbo].[UpdatePassword]", sqlConnection);
+                    //passing command type as stored procedure
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    //adding the parameter to the strored procedure
+                    var password = this.EncryptPassword(resetPasswordModel.NewPassword);
+                    sqlCommand.Parameters.AddWithValue("@UserId", resetPasswordModel.UserId);
+                    sqlCommand.Parameters.AddWithValue("@NewPassword", password);
+                    //checking the result 
+                    int result = sqlCommand.ExecuteNonQuery();
+                    if (result > 0)
+                        return true;
+                    else
+                        return false;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
     }
-
 }
+
+
+
 
 

@@ -8,10 +8,15 @@ namespace Manager.Inteface
     public interface IUserManager
 
     {
-        public int Register(RegisterModel userDetails);
+        public bool Register(RegisterModel userDetails);
 
         RegisterModel Login(LoginModel loginData);
+
         DataResponseModel ForgetPassword(string email);
+
+
+
+        bool ResetPassword(ResetPasswordModel resetPasswordModel);
 
     }
 }
