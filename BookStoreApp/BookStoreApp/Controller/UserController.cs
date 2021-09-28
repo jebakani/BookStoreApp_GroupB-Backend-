@@ -151,7 +151,7 @@ namespace BookStoreApp.Controller
             var result = this.manager.GetUserDetails(userId);
             try
             {
-                if (result.AddressId>0)
+                if (result.Count>0)
                 {
                     return this.Ok(new  { Status = true, Message = "Address successfully retrived" ,Data=result});
 

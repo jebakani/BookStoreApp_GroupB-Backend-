@@ -1,4 +1,5 @@
-﻿using Manager.Inteface;
+
+using Manager.Inteface;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using System;
@@ -26,9 +27,9 @@ namespace BookStoreApp.Controller
             var result = this.manager.GetAllBooks();
             try
             {
-                if (result.Count>0)
+                if (result.Count > 0)
                 {
-                    return this.Ok(new { Status = true, Message = "All Notes", data=result });
+                    return this.Ok(new { Status = true, Message = "All Notes", data = result });
 
                 }
                 else
@@ -39,6 +40,31 @@ namespace BookStoreApp.Controller
             catch (Exception e)
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
+            }
+        }
+        [HttpPost]
+        [Route("Add")]
+        public IActionResult AddBook([FromBody] BooksModel bookDetails)
+        {
+            try
+            {
+                var result = this.manager.AddBook(bookDetails);
+                if (result)
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New User Successfully !" });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to add new user, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
             }
         }
     }

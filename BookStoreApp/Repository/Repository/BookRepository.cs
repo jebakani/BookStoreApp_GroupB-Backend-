@@ -11,7 +11,7 @@ namespace Repository.Repository
     public class BookRepository : IBookRepository
 
     {
-        public static string connectionString = @"Data Source=localhost;Initial Catalog=BookStore;Integrated Security=True";
+        public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BookStore;Integrated Security=True";
 
         SqlConnection sqlConnection = new SqlConnection(connectionString);
         public List<BooksModel> GetAllBooks()
@@ -55,6 +55,40 @@ namespace Repository.Repository
                     }
                    
 
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+        public bool AddBook(BooksModel bookDetails)
+        {
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("dbo.InsertBooks", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+
+                    sqlCommand.Parameters.AddWithValue("@BookName", bookDetails.BookName);
+                    sqlCommand.Parameters.AddWithValue("@AuthorName", bookDetails.AuthorName);
+                    sqlCommand.Parameters.AddWithValue("@Price", bookDetails.Price);
+                    sqlCommand.Parameters.AddWithValue("@originalPrice", bookDetails.OriginalPrice);
+                    sqlCommand.Parameters.AddWithValue("@BookDescription", bookDetails.BookDescription);
+                    sqlCommand.Parameters.AddWithValue("@Image", bookDetails.Image);
+                    sqlCommand.Parameters.AddWithValue("@Rating", bookDetails.Rating);
+                    sqlCommand.Parameters.AddWithValue("@BookCount", bookDetails.BookCount);
+                    int result = sqlCommand.ExecuteNonQuery();
+                    if (result > 0)
+                        return true;
+                    else
+                        return false;
                 }
                 catch (Exception e)
                 {

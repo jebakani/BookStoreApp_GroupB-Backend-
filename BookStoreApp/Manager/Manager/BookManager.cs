@@ -29,5 +29,16 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public bool AddBook(BooksModel bookDetails)
+        {
+            try
+            {
+                return this.repository.AddBook(bookDetails);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

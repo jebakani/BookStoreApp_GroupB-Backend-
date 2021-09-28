@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using Experimental.System.Messaging;
+using System.Collections.Generic;
 
 namespace Repository.Repository
 {
@@ -300,7 +301,7 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
-        public UserDetailsModel GetUserDetails(int userId)
+        public List<UserDetailsModel> GetUserDetails(int userId)
         {
             try
             {
@@ -310,17 +311,22 @@ namespace Repository.Repository
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.AddWithValue("@UserId", userId);
-                UserDetailsModel userDetail = new UserDetailsModel();
-                SqlDataReader rd = cmd.ExecuteReader();
-                if (rd.Read())
+                SqlDataReader readData = cmd.ExecuteReader();
+                List<UserDetailsModel> userdetaillist = new List<UserDetailsModel>();
+                if (readData.HasRows)
                 {
-                    userDetail.AddressId = rd.GetInt32("AddressId");
-                    userDetail.Address = rd.GetString("address");
-                    userDetail.City = rd.GetString("city").ToString();
-                    userDetail.State = rd.GetString("state");
-                    userDetail.Type = rd.GetString("type");
+                    while (readData.Read())
+                    {
+                        UserDetailsModel userDetail = new UserDetailsModel();
+                        userDetail.AddressId = readData.GetInt32("AddressId");
+                        userDetail.Address = readData.GetString("address");
+                        userDetail.City = readData.GetString("city").ToString();
+                        userDetail.State = readData.GetString("state");
+                        userDetail.Type = readData.GetString("type");
+                        userdetaillist.Add(userDetail);
+                    }
                 }
-                return userDetail;
+                return userdetaillist;
             }
             catch (Exception e)
             {

@@ -17,7 +17,7 @@ namespace Manager.Inteface
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
         public bool AddUserDetails(UserDetailsModel userDetails);
 
-        UserDetailsModel GetUserDetails(int userId);
+        List<UserDetailsModel> GetUserDetails(int userId);
         bool EditAddress(UserDetailsModel details);
 
     }

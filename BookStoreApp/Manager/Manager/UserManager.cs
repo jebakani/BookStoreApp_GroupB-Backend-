@@ -79,7 +79,7 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public UserDetailsModel GetUserDetails(int userId)
+        public List<UserDetailsModel> GetUserDetails(int userId)
         {
             try
             {

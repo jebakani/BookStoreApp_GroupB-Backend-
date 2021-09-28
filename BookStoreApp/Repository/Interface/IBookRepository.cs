@@ -8,5 +8,7 @@ namespace Manager.Inteface
     public interface IBookRepository
     {
        public List<BooksModel> GetAllBooks();
+        bool AddBook(BooksModel bookDetails);
+
     }
 }
