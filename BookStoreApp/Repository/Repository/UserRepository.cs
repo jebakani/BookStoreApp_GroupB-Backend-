@@ -223,7 +223,7 @@ namespace Repository.Repository
         {
             MailMessage mailMessage = new MailMessage();
             SmtpClient smtp = new SmtpClient();
-            mailMessage.From = new MailAddress("17cse12jebakaniishwaryav@gmail.com");
+            mailMessage.From = new MailAddress("charan2000kanduri@gmail.com");
             mailMessage.To.Add(new System.Net.Mail.MailAddress(email));
             mailMessage.Subject = "Link to reset you password for fundoo Application";
             mailMessage.IsBodyHtml = true;
@@ -231,7 +231,7 @@ namespace Repository.Repository
             smtp.Port = 587;
             smtp.Host = "smtp.gmail.com";
             smtp.EnableSsl = true;
-            smtp.Credentials = new NetworkCredential("17cse12jebakaniishwaryav@gmail.com", "Jebakani2000");
+            smtp.Credentials = new NetworkCredential("charan2000kanduri@gmail.com", "Charan@123");
             smtp.Send(mailMessage);
             return true;
         }
