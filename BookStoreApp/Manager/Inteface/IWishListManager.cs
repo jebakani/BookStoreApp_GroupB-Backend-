@@ -8,5 +8,6 @@ namespace Manager.Inteface
    public interface IWishListManager
     {
         bool AddToWishList(WishListModel wishListModel);
+        bool RemoveFromWishList(int wishListId);
     }
 }

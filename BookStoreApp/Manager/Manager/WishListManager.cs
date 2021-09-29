@@ -26,5 +26,17 @@ namespace Manager.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool RemoveFromWishList(int wishListId)
+        {
+            try
+            {
+                return this.repository.RemoveFromWishList(wishListId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
