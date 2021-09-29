@@ -8,6 +8,8 @@ using System.Net.Mail;
 using System.Text;
 using Experimental.System.Messaging;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+
 
 namespace Repository.Repository
 {
@@ -15,11 +17,16 @@ namespace Repository.Repository
 
     public class UserRepository : IUserRepository
     {
-        public static string connectionString = @"Data Source=localhost;Initial Catalog=BookStore;Integrated Security=True";
-
-        SqlConnection sqlConnection = new SqlConnection(connectionString);
+        
+        public UserRepository(IConfiguration configuration)
+        {
+            this.Configuration = configuration;
+        }
+        public  IConfiguration Configuration { get; }
+        SqlConnection sqlConnection;
         public bool Register(RegisterModel userDetails)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
             using (sqlConnection)
 
                 try
@@ -65,6 +72,7 @@ namespace Repository.Repository
         }
         public RegisterModel Login(LoginModel loginData)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
             try
             {
                 var encodedpassword = this.EncryptPassword(loginData.Password);
@@ -107,6 +115,8 @@ namespace Repository.Repository
         }
         public DataResponseModel ForgetPassword(string email)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+
             try
             {
                 sqlConnection.Open();
@@ -118,7 +128,7 @@ namespace Repository.Repository
                 cmd.Parameters.Add("@result", SqlDbType.Int);
                 cmd.Parameters["@result"].Direction = ParameterDirection.Output;
                 cmd.Parameters.Add("@userId", SqlDbType.Int);
-                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@userId"].Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 var result = cmd.Parameters["@result"].Value;
 
@@ -223,7 +233,7 @@ namespace Repository.Repository
         {
             MailMessage mailMessage = new MailMessage();
             SmtpClient smtp = new SmtpClient();
-            mailMessage.From = new MailAddress("charan2000kanduri@gmail.com");
+            mailMessage.From = new MailAddress("17cse12jebakaniishwaryav@gmail.com");
             mailMessage.To.Add(new System.Net.Mail.MailAddress(email));
             mailMessage.Subject = "Link to reset you password for fundoo Application";
             mailMessage.IsBodyHtml = true;
@@ -231,12 +241,13 @@ namespace Repository.Repository
             smtp.Port = 587;
             smtp.Host = "smtp.gmail.com";
             smtp.EnableSsl = true;
-            smtp.Credentials = new NetworkCredential("charan2000kanduri@gmail.com", "Charan@123");
+            smtp.Credentials = new NetworkCredential("17cse12jebakaniishwaryav@gmail.com", "");
             smtp.Send(mailMessage);
             return true;
         }
         public bool ResetPassword(ResetPasswordModel resetPasswordModel)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
             using (sqlConnection)
                 try
                 {
@@ -268,6 +279,8 @@ namespace Repository.Repository
 
         public bool AddUserDetails(UserDetailsModel userDetails)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+
             using (sqlConnection)
 
                 try
@@ -303,6 +316,8 @@ namespace Repository.Repository
         }
         public List<UserDetailsModel> GetUserDetails(int userId)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+
             try
             {
                 sqlConnection.Open();
@@ -339,6 +354,8 @@ namespace Repository.Repository
         }
         public bool EditAddress(UserDetailsModel userDetails)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+
             using (sqlConnection)
 
                 try

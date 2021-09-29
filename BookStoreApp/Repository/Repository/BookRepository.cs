@@ -1,4 +1,5 @@
 ﻿using Manager.Inteface;
+using Microsoft.Extensions.Configuration;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -9,18 +10,21 @@ namespace Repository.Repository
 {
 
     public class BookRepository : IBookRepository
-
     {
-        public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BookStore;Integrated Security=True";
+        public BookRepository(IConfiguration configuration)
+        {
+            this.Configuration = configuration;
+        }
+        public IConfiguration Configuration { get; }
+        SqlConnection sqlConnection;
 
-        SqlConnection sqlConnection = new SqlConnection(connectionString);
+
         public List<BooksModel> GetAllBooks()
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
             using (sqlConnection)
-
                 try
                 {
-
                     SqlCommand sqlCommand = new SqlCommand("dbo.GetAllBooks", sqlConnection);
 
                     sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
@@ -53,8 +57,6 @@ namespace Repository.Repository
                     {
                         return null;
                     }
-                   
-
                 }
                 catch (Exception e)
                 {
@@ -67,6 +69,7 @@ namespace Repository.Repository
         }
         public bool AddBook(BooksModel bookDetails)
         {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
             using (sqlConnection)
                 try
                 {

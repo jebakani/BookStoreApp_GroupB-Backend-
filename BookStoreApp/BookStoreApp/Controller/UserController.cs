@@ -54,7 +54,7 @@ namespace BookStoreApp.Controller
             var result = this.manager.Login(loginData);
             try
             {
-                if (result != null)
+                if (result.CustomerId>0)
                 {
                     return this.Ok(new { Status = true, Message = "Login Successful !", Data = result });
 
