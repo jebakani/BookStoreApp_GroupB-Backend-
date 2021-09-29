@@ -27,6 +27,18 @@ namespace Manager.Manager
             }
         }
 
+        public List<WishListModel> GetFromWishList(int userId)
+        {
+            try
+            {
+                return this.repository.GetFromWishList(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public bool RemoveFromWishList(int wishListId)
         {
             try

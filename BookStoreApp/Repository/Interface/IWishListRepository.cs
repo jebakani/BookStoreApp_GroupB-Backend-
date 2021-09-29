@@ -9,5 +9,6 @@ namespace Repository.Interface
     {
         bool AddToWishList(WishListModel wishListModel);
         bool RemoveFromWishList(int wishListId);
+       public  List<WishListModel> GetFromWishList(int userId);
     }
 }
