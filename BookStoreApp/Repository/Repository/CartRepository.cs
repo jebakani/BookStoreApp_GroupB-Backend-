@@ -104,18 +104,50 @@ namespace Repository.Repository
                             book.Price = Convert.ToInt32(reader[3]);
                             book.Image = reader[8].ToString();
                             book.OriginalPrice = Convert.ToInt32(reader[4]);
-                            book.BookCount = Convert.ToInt32(reader[6]);
+                            book.BookCount = Convert.ToInt32(reader[7]);
                             cart.CartID = Convert.ToInt32(reader[5]);
-                            cart.BookOrderCount= Convert.ToInt32(reader[7]);
+                            cart.BookOrderCount= Convert.ToInt32(reader[6]);
                             cart.Books = book;
-
                             cartItems.Add(cart);
                         }
-                        return cartItems;
+                        
+                    }
+                    return cartItems;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+        public bool UpdateOrderCount(CartModel cartDetail)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("dbo.EditNumberOfBooks", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@CartId", cartDetail.CartID);
+                    sqlCommand.Parameters.AddWithValue("@BookId", cartDetail.BookID);
+                    sqlCommand.Parameters.AddWithValue("@Count", cartDetail.BookOrderCount);
+                    var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    returnedSQLParameter.Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = (int)returnedSQLParameter.Value;
+                    if(result.Equals(1))
+                    {
+                        return true;
                     }
                     else
                     {
-                        return null;
+                        return false;
                     }
                 }
                 catch (Exception e)

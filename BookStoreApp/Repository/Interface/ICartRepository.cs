@@ -9,6 +9,7 @@ namespace Repository.Interface
     {
         bool AddToCart(CartModel details);
         bool DeleteFromCart(int cartId);
+        bool UpdateOrderCount(CartModel cartDetail);
         List<CartModel> GetCartItems(int userId);
     }
 }

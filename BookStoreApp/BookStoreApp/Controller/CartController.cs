@@ -92,5 +92,29 @@ namespace BookStoreApp.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+        [HttpPut]
+        [Route("UpadetOrderCount")]
+        public IActionResult UpadetOrderCount(CartModel cartDetail)
+        {
+            try
+            {
+                var result = this.manager.UpdateOrderCount(cartDetail);
+                if (result)
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "count updated"});
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed TryAgain" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

@@ -46,5 +46,17 @@ namespace Manager.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool UpdateOrderCount(CartModel cartDetail)
+        {
+            try
+            {
+                return this.repository.UpdateOrderCount(cartDetail);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
