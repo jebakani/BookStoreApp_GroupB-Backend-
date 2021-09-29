@@ -52,7 +52,7 @@ namespace BookStoreApp.Controller
                 if (result)
                 {
 
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New User Successfully !" });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New Book Successfully !" });
                 }
                 else
                 {
@@ -67,5 +67,28 @@ namespace BookStoreApp.Controller
 
             }
         }
+        [HttpGet]
+        [Route("GetBookDetail")]
+        public IActionResult GetBookDetail(int bookId)
+        {
+            var result = this.manager.GetBookDetail(bookId);
+            try
+            {
+                if (result.BookId!=0)
+                {
+                    return this.Ok(new { Status = true, Message = "Book is retrived", data = result });
+
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Try again" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
+            }
+        }
+
     }
 }

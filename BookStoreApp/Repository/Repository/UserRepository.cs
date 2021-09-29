@@ -234,9 +234,9 @@ namespace Repository.Repository
             SmtpClient smtp = new SmtpClient();
             mailMessage.From = new MailAddress("17cse12jebakaniishwaryav@gmail.com");
             mailMessage.To.Add(new System.Net.Mail.MailAddress(email));
-            mailMessage.Subject = "Link to reset you password for fundoo Application";
+            mailMessage.Subject = "Link to reset you password for BookStore Application";
             mailMessage.IsBodyHtml = true;
-            mailMessage.Body = message;
+            mailMessage.Body ="Here is the otp : "+message;
             smtp.Port = 587;
             smtp.Host = "smtp.gmail.com";
             smtp.EnableSsl = true;

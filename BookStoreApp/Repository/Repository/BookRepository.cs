@@ -39,13 +39,13 @@ namespace Repository.Repository
                         while (reader.Read())
                         {
                             BooksModel booksModel = new BooksModel();
-
+                            booksModel.BookId = Convert.ToInt32(reader["BookId"]);
                             booksModel.AuthorName = reader["AuthorName"].ToString();
                             booksModel.BookName = reader["BookName"].ToString();
                             booksModel.BookDescription = reader["BookDescription"].ToString();
                             booksModel.Price = Convert.ToInt32(reader["Price"]);
                             booksModel.Image = reader["Image"].ToString();
-                            booksModel.OriginalPrice = Convert.ToInt32(reader["OrginalPrice"]);
+                            booksModel.OriginalPrice = Convert.ToInt32(reader["OriginalPrice"]);
                             booksModel.BookCount = Convert.ToInt32(reader["BookCount"]);
                             booksModel.Rating = Convert.ToInt32(reader["Rating"]);
 
@@ -92,6 +92,42 @@ namespace Repository.Repository
                         return true;
                     else
                         return false;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+        public BooksModel GetBookDetail(int bookId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("dbo.GetBook", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@BookId", bookId);
+                    BooksModel booksModel = new BooksModel();
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        booksModel.AuthorName = reader["AuthorName"].ToString();
+                        booksModel.BookName = reader["BookName"].ToString();
+                        booksModel.BookDescription = reader["BookDescription"].ToString();
+                        booksModel.Price = Convert.ToInt32(reader["Price"]);
+                        booksModel.Image = reader["Image"].ToString();
+                        booksModel.OriginalPrice = Convert.ToInt32(reader["OriginalPrice"]);
+                        booksModel.BookCount = Convert.ToInt32(reader["BookCount"]);
+                        booksModel.Rating = Convert.ToInt32(reader["Rating"]);
+                    }
+                    return booksModel;
                 }
                 catch (Exception e)
                 {

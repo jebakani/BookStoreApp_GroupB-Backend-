@@ -40,5 +40,18 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public BooksModel GetBookDetail(int bookId)
+        {
+            try
+            {
+                return this.repository.GetBookDetail(bookId);
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
