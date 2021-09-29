@@ -188,6 +188,28 @@ namespace BookStoreApp.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
+        [HttpPost]
+        [Route("EditUserDetails")]
+        public IActionResult EditUserDetails([FromBody] RegisterModel details)
+        {
+            var result = this.manager.EditUserDetails(details);
+            try
+            {
+                if (result)
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Details updated successfully" });
+
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "details updation fails" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
+            }
+        }
 
     }
 }

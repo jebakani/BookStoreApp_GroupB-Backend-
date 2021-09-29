@@ -18,6 +18,8 @@ namespace Repository.Interface
         public bool AddUserDetails(UserDetailsModel userDetails);
         List<UserDetailsModel>  GetUserDetails(int userId);
         bool EditAddress(UserDetailsModel details);
+        bool EditUserDetails(RegisterModel details);
+
 
     }
 }

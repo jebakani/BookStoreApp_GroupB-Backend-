@@ -390,7 +390,45 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
+        public bool EditUserDetails(RegisterModel details)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
 
+            using (sqlConnection)
+
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.UpdateUser", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+                    var password = this.EncryptPassword(details.Password);
+                    sqlCommand.Parameters.AddWithValue("@userId", details.CustomerId);
+                    sqlCommand.Parameters.AddWithValue("@FullName", details.CustomerName);
+                    sqlCommand.Parameters.AddWithValue("@EmailId", details.Email);
+                    sqlCommand.Parameters.AddWithValue("@Password", password);
+                    sqlCommand.Parameters.AddWithValue("@Phone", details.PhoneNumber);
+                    sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = sqlCommand.Parameters["@result"].Value;
+                    if (result.Equals(1))
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
     }
 }
 

@@ -19,6 +19,7 @@ namespace Manager.Inteface
 
         List<UserDetailsModel> GetUserDetails(int userId);
         bool EditAddress(UserDetailsModel details);
+        bool EditUserDetails(RegisterModel details);
 
     }
 }

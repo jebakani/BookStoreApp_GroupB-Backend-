@@ -101,6 +101,16 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
-
+       public bool EditUserDetails(RegisterModel details)
+        {
+            try
+            {
+                return this.repository.EditUserDetails(details);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
