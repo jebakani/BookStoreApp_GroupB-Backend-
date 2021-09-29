@@ -402,14 +402,14 @@ namespace Repository.Repository
                     SqlCommand sqlCommand = new SqlCommand("dbo.UpdateUser", sqlConnection);
 
                     sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-
+                    var phonenumber = Convert.ToInt64(details.PhoneNumber);
                     sqlConnection.Open();
                     var password = this.EncryptPassword(details.Password);
                     sqlCommand.Parameters.AddWithValue("@userId", details.CustomerId);
                     sqlCommand.Parameters.AddWithValue("@FullName", details.CustomerName);
                     sqlCommand.Parameters.AddWithValue("@EmailId", details.Email);
                     sqlCommand.Parameters.AddWithValue("@Password", password);
-                    sqlCommand.Parameters.AddWithValue("@Phone", details.PhoneNumber);
+                    sqlCommand.Parameters.AddWithValue("@Phone", phonenumber);
                     sqlCommand.Parameters.Add("@result", SqlDbType.Int);
                     sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
                     sqlCommand.ExecuteNonQuery();
