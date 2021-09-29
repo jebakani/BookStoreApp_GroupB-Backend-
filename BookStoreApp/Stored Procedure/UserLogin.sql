@@ -34,8 +34,5 @@ BEGIN TRY
      end
 END TRY
 BEGIN CATCH  
-       SELECT  
-            ERROR_NUMBER() AS ErrorNumber  
-            ,ERROR_MESSAGE() AS ErrorMessage;  
 END CATCH;
 End

@@ -28,7 +28,6 @@ namespace Repository.Repository
         {
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
             using (sqlConnection)
-
                 try
                 {
                     var password = this.EncryptPassword(userDetails.Password);
