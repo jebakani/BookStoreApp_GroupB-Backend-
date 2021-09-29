@@ -7,6 +7,7 @@ namespace Manager.Inteface
 {
     public interface ICartManager
     {
+        bool DeleteFromCart(int cartId);
         bool AddToCart(CartModel details);
     }
 }

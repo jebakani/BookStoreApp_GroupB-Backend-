@@ -25,5 +25,17 @@ namespace Manager.Manager
                 throw new Exception(ex.Message);
             }
         }
+       public bool DeleteFromCart(int cartId)
+        {
+            try
+            {
+                return this.repository.DeleteFromCart(cartId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

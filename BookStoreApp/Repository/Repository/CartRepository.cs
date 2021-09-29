@@ -49,5 +49,34 @@ namespace Repository.Repository
                     throw new Exception(e.Message);
                 }
         }
+        public bool DeleteFromCart(int cartId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("dbo.RemoveFromCart", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@cartId", cartId);
+                    var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    returnedSQLParameter.Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = (int)returnedSQLParameter.Value;
+                    if (result.Equals(1))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+        }
     }
 }
