@@ -9,5 +9,6 @@ namespace Manager.Inteface
     {
         bool DeleteFromCart(int cartId);
         bool AddToCart(CartModel details);
+        List<CartModel> GetCartItems(int userId);
     }
 }

@@ -12,5 +12,6 @@ namespace Model
         public int  BookID { get; set; }
         [DefaultValue(1)]
         public int BookOrderCount { get; set; }
+        public BooksModel Books { get; set; }
     }
 }

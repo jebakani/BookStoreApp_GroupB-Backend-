@@ -78,5 +78,54 @@ namespace Repository.Repository
                     throw new Exception(e.Message);
                 }
         }
+        public List<CartModel> GetCartItems(int userId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("dbo.GetCartItem", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@userId", userId);
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    List<CartModel> cartItems = new List<CartModel>();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            CartModel cart = new CartModel();
+                            BooksModel book = new BooksModel();
+                            cart.BookID = Convert.ToInt32(reader[0]);
+                            book.AuthorName = reader[1].ToString();
+                            book.BookName = reader[2].ToString();
+                            book.Price = Convert.ToInt32(reader[3]);
+                            book.Image = reader[8].ToString();
+                            book.OriginalPrice = Convert.ToInt32(reader[4]);
+                            book.BookCount = Convert.ToInt32(reader[6]);
+                            cart.CartID = Convert.ToInt32(reader[5]);
+                            cart.BookOrderCount= Convert.ToInt32(reader[7]);
+                            cart.Books = book;
+
+                            cartItems.Add(cart);
+                        }
+                        return cartItems;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
     }
 }

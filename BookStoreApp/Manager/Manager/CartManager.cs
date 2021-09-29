@@ -36,6 +36,15 @@ namespace Manager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
+        public List<CartModel> GetCartItems(int userId)
+        { try
+            {
+                return this.repository.GetCartItems(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
