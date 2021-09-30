@@ -1,4 +1,3 @@
-
 using Manager.Inteface;
 using Microsoft.AspNetCore.Mvc;
 using Model;
@@ -52,7 +51,7 @@ namespace BookStoreApp.Controller
                 if (result)
                 {
 
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New Book Successfully !" });
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New User Successfully !" });
                 }
                 else
                 {
@@ -67,6 +66,7 @@ namespace BookStoreApp.Controller
 
             }
         }
+
         [HttpGet]
         [Route("GetBookDetail")]
         public IActionResult GetBookDetail(int bookId)
@@ -89,6 +89,5 @@ namespace BookStoreApp.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
-
     }
 }
