@@ -10,6 +10,7 @@ namespace Model
         public int CartID { get; set; }
         public int UserId { get; set; }
         public int  BookID { get; set; }
+        public bool orderCountType { get; set; }
         [DefaultValue(1)]
         public int BookOrderCount { get; set; }
         public BooksModel Books { get; set; }

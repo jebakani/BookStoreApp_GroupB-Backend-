@@ -135,8 +135,7 @@ namespace Repository.Repository
 
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("@CartId", cartDetail.CartID);
-                    sqlCommand.Parameters.AddWithValue("@BookId", cartDetail.BookID);
-                    sqlCommand.Parameters.AddWithValue("@Count", cartDetail.BookOrderCount);
+                    sqlCommand.Parameters.AddWithValue("@type", cartDetail.orderCountType);
                     var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
                     returnedSQLParameter.Direction = ParameterDirection.Output;
                     sqlCommand.ExecuteNonQuery();

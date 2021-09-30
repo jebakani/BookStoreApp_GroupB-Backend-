@@ -11,5 +11,8 @@ namespace Manager.Inteface
         bool RemoveFromWishList(int wishListId);
         public List<WishListModel> GetFromWishList(int userId);
 
+    
+
+
     }
 }
