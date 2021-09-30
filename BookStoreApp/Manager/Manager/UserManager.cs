@@ -67,40 +67,7 @@ namespace Manager.Manager
 
         }
 
-        public bool AddUserDetails(AddressModel userDetails)
-        {
-            try
-            {
-                return this.repository.AddUserDetails(userDetails);
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public List<AddressModel> GetUserDetails(int userId)
-        {
-            try
-            {
-                return this.repository.GetUserDetails(userId);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public  bool EditAddress(AddressModel details)
-        {
-            try
-            {
-                return this.repository.EditAddress(details);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+       
        public bool EditUserDetails(RegisterModel details)
         {
             try
@@ -113,16 +80,6 @@ namespace Manager.Manager
             }
         }
 
-        public bool RemoveFromUserDetails(int addressId)
-        {
-            try
-            {
-                return this.repository.RemoveFromUserDetails(addressId);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+       
     }
 }
