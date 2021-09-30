@@ -144,6 +144,31 @@ namespace BookStoreApp.Controller
 
             }
         }
+        [HttpDelete]
+        [Route("RemoveFromUserDetails")]
+        public IActionResult RemoveFromUserDetails(int addressId)
+        {
+            try
+            {
+                var result = this.manager.RemoveFromUserDetails(addressId);
+                if (result)
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Removed User Address Successfully !" });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to Remove User Address, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
         [HttpGet]
         [Route("getUserAddress")]
         public IActionResult getUserAddress(int userId)

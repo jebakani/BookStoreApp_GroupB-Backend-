@@ -112,5 +112,17 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+
+        public bool RemoveFromUserDetails(int addressId)
+        {
+            try
+            {
+                return this.repository.RemoveFromUserDetails(addressId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

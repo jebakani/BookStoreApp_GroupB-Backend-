@@ -313,6 +313,40 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
+        public bool RemoveFromUserDetails(int addressId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.RemoveFromUserDetails", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+
+
+                    sqlCommand.Parameters.AddWithValue("@AddressId", addressId);
+
+
+                    int result = sqlCommand.ExecuteNonQuery();
+                    if (result > 0)
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+
+        }
         public List<AddressModel> GetUserDetails(int userId)
         {
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
