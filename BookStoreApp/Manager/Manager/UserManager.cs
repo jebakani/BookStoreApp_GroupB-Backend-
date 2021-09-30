@@ -67,7 +67,7 @@ namespace Manager.Manager
 
         }
 
-        public bool AddUserDetails(UserDetailsModel userDetails)
+        public bool AddUserDetails(AddressModel userDetails)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public List<UserDetailsModel> GetUserDetails(int userId)
+        public List<AddressModel> GetUserDetails(int userId)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public  bool EditAddress(UserDetailsModel details)
+        public  bool EditAddress(AddressModel details)
         {
             try
             {

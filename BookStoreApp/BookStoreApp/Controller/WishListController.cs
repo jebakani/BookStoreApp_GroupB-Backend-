@@ -18,8 +18,8 @@ namespace BookStoreApp.Controller
 
         }
         [HttpPost]
-        [Route("RemoveFromWishList")]
-        public IActionResult Register([FromBody] WishListModel wishListModel)
+        [Route("AddToWishList")]
+        public IActionResult AddToWishList([FromBody] WishListModel wishListModel)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace BookStoreApp.Controller
             }
         }
         [HttpDelete]
-        [Route("AddToWishList")]
+        [Route("RemoveFromWishList")]
         public IActionResult RemoveFromWishList(int wishListId)
         {
             try

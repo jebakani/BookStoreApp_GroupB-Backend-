@@ -276,7 +276,7 @@ namespace Repository.Repository
                 }
         }
 
-        public bool AddUserDetails(UserDetailsModel userDetails)
+        public bool AddUserDetails(AddressModel userDetails)
         {
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
 
@@ -313,7 +313,7 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
-        public List<UserDetailsModel> GetUserDetails(int userId)
+        public List<AddressModel> GetUserDetails(int userId)
         {
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
 
@@ -326,12 +326,12 @@ namespace Repository.Repository
                 };
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 SqlDataReader readData = cmd.ExecuteReader();
-                List<UserDetailsModel> userdetaillist = new List<UserDetailsModel>();
+                List<AddressModel> userdetaillist = new List<AddressModel>();
                 if (readData.HasRows)
                 {
                     while (readData.Read())
                     {
-                        UserDetailsModel userDetail = new UserDetailsModel();
+                        AddressModel userDetail = new AddressModel();
                         userDetail.AddressId = readData.GetInt32("AddressId");
                         userDetail.Address = readData.GetString("address");
                         userDetail.City = readData.GetString("city").ToString();
@@ -351,7 +351,7 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
-        public bool EditAddress(UserDetailsModel userDetails)
+        public bool EditAddress(AddressModel userDetails)
         {
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
 
@@ -407,8 +407,6 @@ namespace Repository.Repository
                     var password = this.EncryptPassword(details.Password);
                     sqlCommand.Parameters.AddWithValue("@userId", details.CustomerId);
                     sqlCommand.Parameters.AddWithValue("@FullName", details.CustomerName);
-                    sqlCommand.Parameters.AddWithValue("@EmailId", details.Email);
-                    sqlCommand.Parameters.AddWithValue("@Password", password);
                     sqlCommand.Parameters.AddWithValue("@Phone", phonenumber);
                     sqlCommand.Parameters.Add("@result", SqlDbType.Int);
                     sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;

@@ -121,7 +121,7 @@ namespace BookStoreApp.Controller
         }
         [HttpPost]
         [Route("Adduserdetails")]
-        public IActionResult AddUserDetails([FromBody] UserDetailsModel userDetails)
+        public IActionResult AddUserDetails([FromBody] AddressModel userDetails)
         {
             try
             {
@@ -168,7 +168,7 @@ namespace BookStoreApp.Controller
         }
         [HttpPost]
         [Route("EditAddress")]
-        public IActionResult EditAddress([FromBody]UserDetailsModel details)
+        public IActionResult EditAddress([FromBody]AddressModel details)
         {
             var result = this.manager.EditAddress(details);
             try

@@ -15,9 +15,9 @@ namespace Repository.Interface
 
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
 
-        public bool AddUserDetails(UserDetailsModel userDetails);
-        List<UserDetailsModel>  GetUserDetails(int userId);
-        bool EditAddress(UserDetailsModel details);
+        public bool AddUserDetails(AddressModel userDetails);
+        List<AddressModel>  GetUserDetails(int userId);
+        bool EditAddress(AddressModel details);
         bool EditUserDetails(RegisterModel details);
 
 
