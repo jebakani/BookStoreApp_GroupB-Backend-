@@ -20,6 +20,6 @@ namespace Repository.Interface
         bool EditAddress(UserDetailsModel details);
         bool EditUserDetails(RegisterModel details);
 
-
+        string GenerateToken(string email);
     }
 }

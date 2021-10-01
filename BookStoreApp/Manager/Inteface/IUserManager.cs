@@ -21,5 +21,7 @@ namespace Manager.Inteface
         bool EditAddress(UserDetailsModel details);
         bool EditUserDetails(RegisterModel details);
 
+        string GenerateToken(string email);
+
     }
 }

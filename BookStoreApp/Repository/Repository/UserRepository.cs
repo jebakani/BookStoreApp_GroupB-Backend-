@@ -9,7 +9,9 @@ using System.Text;
 using Experimental.System.Messaging;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Repository.Repository
 {
@@ -428,6 +430,21 @@ namespace Repository.Repository
                 {
                     sqlConnection.Close();
                 }
+        }
+
+        public string GenerateToken(string email)
+        {
+            var key = Encoding.UTF8.GetBytes(this.Configuration["SecretKey"]);
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
+            SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
+            return handler.WriteToken(token);
         }
     }
 }

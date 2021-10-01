@@ -52,11 +52,12 @@ namespace BookStoreApp.Controller
         public IActionResult Login([FromBody] LoginModel loginData)
         {
             var result = this.manager.Login(loginData);
+            string resultMessage = this.manager.GenerateToken(loginData.Email);
             try
             {
                 if (result.CustomerId>0)
                 {
-                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = result });
+                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = result, resultMessage });
 
                 }
                 else

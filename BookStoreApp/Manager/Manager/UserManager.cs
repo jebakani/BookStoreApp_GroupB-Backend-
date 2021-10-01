@@ -112,5 +112,17 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+
+        public string GenerateToken(string email)
+        {
+            try
+            {
+                return this.repository.GenerateToken(email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
