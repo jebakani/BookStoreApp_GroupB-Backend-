@@ -90,5 +90,31 @@ namespace BookStoreApp.Controller
             }
         }
 
+        [HttpPost]
+        [Route("AddCustomerFeedBack")]
+        public IActionResult AddCustomerFeedBack([FromBody] FeedbackModel feedbackModel)
+        {
+            try
+            {
+                var result = this.manager.AddCustomerFeedBack(feedbackModel);
+                if (result)
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added FeedBack Successfully !" });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to add feedback, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
+
     }
 }

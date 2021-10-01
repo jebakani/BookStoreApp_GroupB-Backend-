@@ -42,6 +42,8 @@ namespace BookStoreApp
             services.AddTransient<IOrderManager, OrderManager>();
             services.AddTransient<IOrderRepository, OrderRepository>();
 
+            
+
 
             services.AddCors(options => 
             {

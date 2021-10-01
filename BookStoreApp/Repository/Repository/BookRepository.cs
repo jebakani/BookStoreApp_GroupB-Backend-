@@ -138,5 +138,39 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
+
+        public bool AddCustomerFeedBack(FeedbackModel feedbackModel)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.AddFeedback", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@BookId", feedbackModel.bookId);
+                    sqlCommand.Parameters.AddWithValue("@UserId", feedbackModel.userId);
+                    sqlCommand.Parameters.AddWithValue("@Rating", feedbackModel.rating);
+                    sqlCommand.Parameters.AddWithValue("@FeedBack", feedbackModel.feedback);
+
+
+                    int result = sqlCommand.ExecuteNonQuery();
+
+                    if (result > 0)
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
     }
 }

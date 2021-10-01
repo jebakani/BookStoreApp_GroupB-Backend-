@@ -53,5 +53,21 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+
+        public bool AddCustomerFeedBack(FeedbackModel feedbackModel)
+        {
+            try
+            {
+                return this.repository.AddCustomerFeedBack(feedbackModel);
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        
     }
 }

@@ -7,9 +7,10 @@ namespace Manager.Inteface
 {
     public interface IBookManager
     {
-        public List<BooksModel> GetAllBooks();
+        List<BooksModel> GetAllBooks();
         bool AddBook(BooksModel bookDetails);
         BooksModel GetBookDetail(int bookId);
+        bool AddCustomerFeedBack(FeedbackModel feedbackModel);
 
     }
 }
