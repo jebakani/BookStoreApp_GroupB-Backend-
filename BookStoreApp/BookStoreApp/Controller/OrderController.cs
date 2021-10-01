@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookStoreApp.Controller
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         

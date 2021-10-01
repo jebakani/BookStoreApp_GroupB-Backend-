@@ -5,7 +5,12 @@ using System.Text;
 
 namespace Repository.Repository
 {
+    /// <summary>
+    /// Order repository 
+    /// </summary>
+    /// <seealso cref="Repository.Interface.IOrderRepository" />
     public class OrderRepository:IOrderRepository
     {
+
     }
 }
