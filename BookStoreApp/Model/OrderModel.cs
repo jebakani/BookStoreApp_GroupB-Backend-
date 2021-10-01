@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Model
 {
-    class OrderModel
+    public class OrderModel
     {
+        public int OrderId { get; set; }
+        public int UserId { get; set; }
+        public int BookId { get; set; }
+        public string DateOfOrder { get; set; }
+        public BooksModel Books { get; set; }
     }
 }
