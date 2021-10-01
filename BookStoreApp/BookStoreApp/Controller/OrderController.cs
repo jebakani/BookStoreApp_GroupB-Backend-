@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Manager.Inteface;
+using Microsoft.AspNetCore.Mvc;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,38 @@ namespace BookStoreApp.Controller
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
-        
+        private readonly IOrderManager manager;
+
+        public OrderController(IOrderManager manager)
+        {
+            this.manager = manager;
+
+        }
+
+        [HttpPost]
+        [Route("PlaceOrders")]
+        public IActionResult PlaceOrders([FromBody] CartModel orderDetails)
+        {
+            try
+            {
+                var result = this.manager.PlaceTheOrder(orderDetails);
+                if (result)
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Order placed successfully" });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to place order, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
     }
 }
