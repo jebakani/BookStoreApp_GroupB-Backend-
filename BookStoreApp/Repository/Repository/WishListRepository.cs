@@ -112,7 +112,7 @@ namespace Repository.Repository
                             booksModel.BookName = reader["BookName"].ToString();
                             booksModel.Price = Convert.ToInt32(reader["Price"]);
                             booksModel.Image = reader["Image"].ToString();
-                            booksModel.OriginalPrice = Convert.ToInt32(reader["OrginalPrice"]);
+                            booksModel.OriginalPrice = Convert.ToInt32(reader["OriginalPrice"]);
                             wishListModel.WishListId = Convert.ToInt32(reader["WishListId"]);
                             wishListModel.Books = booksModel;
 

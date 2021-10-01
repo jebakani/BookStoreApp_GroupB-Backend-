@@ -45,7 +45,7 @@ namespace Repository.Repository
                             booksModel.BookDescription = reader["BookDescription"].ToString();
                             booksModel.Price = Convert.ToInt32(reader["Price"]);
                             booksModel.Image = reader["Image"].ToString();
-                            booksModel.OriginalPrice = Convert.ToInt32(reader["OrginalPrice"]);
+                            booksModel.OriginalPrice = Convert.ToInt32(reader["OriginalPrice"]);
                             booksModel.BookCount = Convert.ToInt32(reader["BookCount"]);
                             booksModel.Rating = Convert.ToInt32(reader["Rating"]);
 
