@@ -116,5 +116,30 @@ namespace BookStoreApp.Controller
             }
         }
 
+        [HttpPost]
+        [Route("GetFeedback")]
+        public IActionResult GetFeedback(int bookid)
+        {
+            try
+            {
+                var result = this.manager.GetCustomerFeedBack(bookid);
+                if (result.Count > 0)
+                {
+                    return this.Ok(new { Status = true, Message = "Feedbackertrived", Data = result });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to add to wish list, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
+
     }
 }

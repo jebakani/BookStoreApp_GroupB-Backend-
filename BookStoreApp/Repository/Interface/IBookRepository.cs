@@ -11,5 +11,6 @@ namespace Manager.Inteface
         bool AddBook(BooksModel bookDetails);
         BooksModel GetBookDetail(int bookId);
         bool AddCustomerFeedBack(FeedbackModel feedbackModel);
+        List<FeedbackModel> GetCustomerFeedBack(int bookid);
     }
 }

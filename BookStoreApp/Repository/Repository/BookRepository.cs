@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -171,6 +172,43 @@ namespace Repository.Repository
                 {
                     sqlConnection.Close();
                 }
+        }
+        public List<FeedbackModel> GetCustomerFeedBack(int bookid)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            try
+            {
+                sqlConnection.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[GetCustomerFeedback]", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@bookid", bookid);
+                List<FeedbackModel> feedbackList = new List<FeedbackModel>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        FeedbackModel feedbackdetails = new FeedbackModel();
+                        feedbackdetails.userId = reader.GetInt32(0);
+                        feedbackdetails.customerName = reader.GetString("FullName");
+                        feedbackdetails.feedback = reader.GetString("Feedback");
+                        feedbackdetails.rating = reader.GetDouble("Rating");
+                        feedbackList.Add(feedbackdetails);
+                    }
+
+                }
+                return feedbackList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
         }
     }
 }

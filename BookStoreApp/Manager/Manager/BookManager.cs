@@ -67,7 +67,19 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public List<FeedbackModel> GetCustomerFeedBack(int bookid)
+        {
 
-        
+            try
+            {
+                return this.repository.GetCustomerFeedBack(bookid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
     }
 }
