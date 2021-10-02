@@ -294,8 +294,6 @@ namespace Repository.Repository
                     var password = this.EncryptPassword(details.Password);
                     sqlCommand.Parameters.AddWithValue("@userId", details.CustomerId);
                     sqlCommand.Parameters.AddWithValue("@FullName", details.CustomerName);
-                    sqlCommand.Parameters.AddWithValue("@EmailId", details.Email);
-                    sqlCommand.Parameters.AddWithValue("@Password", password);
                     sqlCommand.Parameters.AddWithValue("@Phone", phonenumber);
                     sqlCommand.Parameters.Add("@result", SqlDbType.Int);
                     sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
