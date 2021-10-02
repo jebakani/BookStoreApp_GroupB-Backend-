@@ -22,7 +22,7 @@ namespace BookStoreApp.Controller
 
         [HttpPost]
         [Route("PlaceOrders")]
-        public IActionResult PlaceOrders([FromBody] CartModel orderDetails)
+        public IActionResult PlaceOrders([FromBody] List<CartModel> orderDetails)
         {
             try
             {

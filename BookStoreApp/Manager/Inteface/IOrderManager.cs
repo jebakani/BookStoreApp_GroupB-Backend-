@@ -7,6 +7,6 @@ namespace Manager.Inteface
 {
     public interface IOrderManager
     {
-        bool PlaceTheOrder(CartModel orderdetails);
+        bool PlaceTheOrder(List<CartModel> orderdetails);
     }
 }

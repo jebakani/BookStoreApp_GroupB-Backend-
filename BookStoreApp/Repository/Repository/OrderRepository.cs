@@ -21,30 +21,40 @@ namespace Repository.Repository
         }
         public IConfiguration Configuration { get; }
         SqlConnection sqlConnection;
-        public bool PlaceTheOrder(CartModel orderdetails)
+        public bool PlaceTheOrder(List<CartModel> orderdetails)
         {
+            bool res=false;
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
             using (sqlConnection)
                 try
                 {
+                    foreach (var order in orderdetails)
+                    {
+                        SqlCommand sqlCommand = new SqlCommand("dbo.PlaceTheOrder", sqlConnection);
+                        sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlConnection.Open();
+                        sqlCommand.Parameters.AddWithValue("@BookId", order.BookID);
+                        sqlCommand.Parameters.AddWithValue("@CartId", order.CartID);
+                        sqlCommand.Parameters.AddWithValue("@UserId", order.UserId);
+                        string date = DateTime.Now.ToString(" dd MMM yyyy");
+                        sqlCommand.Parameters.AddWithValue("@OrderDate", date);
+                        var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                        returnedSQLParameter.Direction = ParameterDirection.Output;
+                        sqlCommand.ExecuteNonQuery();
+                        int result = (int)returnedSQLParameter.Value;
 
-                    SqlCommand sqlCommand = new SqlCommand("dbo.PlaceTheOrder", sqlConnection);
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("@BookId", orderdetails.BookID);
-                    sqlCommand.Parameters.AddWithValue("@CartId", orderdetails.CartID);
-                    sqlCommand.Parameters.AddWithValue("@UserId", orderdetails.UserId);
-                    string date = DateTime.Now.ToString(" dd MMM yyyy");
-                    sqlCommand.Parameters.AddWithValue("@OrderDate", date);
-                    var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
-                    returnedSQLParameter.Direction = ParameterDirection.Output;
-                    sqlCommand.ExecuteNonQuery();
-                    int result = (int)returnedSQLParameter.Value;
-                    if (result == 1)
-                        return true;
-                    else
-                        return false;
-
+                        if (result == 1)
+                        {
+                            res = true;
+                            sqlConnection.Close();
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                    return res;
                 }
                 catch (Exception e)
                 {

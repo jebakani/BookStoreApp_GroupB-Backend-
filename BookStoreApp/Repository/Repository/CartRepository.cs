@@ -107,6 +107,7 @@ namespace Repository.Repository
                             book.BookCount = Convert.ToInt32(reader[7]);
                             cart.CartID = Convert.ToInt32(reader[5]);
                             cart.BookOrderCount= Convert.ToInt32(reader[6]);
+                            cart.UserId = Convert.ToInt32(reader[9]);
                             cart.Books = book;
                             cartItems.Add(cart);
                         }
@@ -135,8 +136,7 @@ namespace Repository.Repository
 
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("@CartId", cartDetail.CartID);
-                    sqlCommand.Parameters.AddWithValue("@BookId", cartDetail.BookID);
-                    sqlCommand.Parameters.AddWithValue("@Count", cartDetail.BookOrderCount);
+                    sqlCommand.Parameters.AddWithValue("@type", cartDetail.type);
                     var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
                     returnedSQLParameter.Direction = ParameterDirection.Output;
                     sqlCommand.ExecuteNonQuery();

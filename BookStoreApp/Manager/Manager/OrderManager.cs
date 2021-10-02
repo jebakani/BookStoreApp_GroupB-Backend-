@@ -14,7 +14,7 @@ namespace Manager.Manager
         {
             this.repository = repository;
         }
-        public bool PlaceTheOrder(CartModel orderDetails)
+        public bool PlaceTheOrder(List<CartModel> orderDetails)
         {
             try
             {

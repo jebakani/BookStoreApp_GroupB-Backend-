@@ -7,6 +7,6 @@ namespace Repository.Interface
 {
     public interface IOrderRepository
     {
-        bool PlaceTheOrder(CartModel orderdetails);
+        bool PlaceTheOrder(List<CartModel> orderdetails);
     }
 }
