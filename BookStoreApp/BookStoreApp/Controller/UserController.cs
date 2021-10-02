@@ -120,75 +120,7 @@ namespace BookStoreApp.Controller
             }
 
         }
-        [HttpPost]
-        [Route("Adduserdetails")]
-        public IActionResult AddUserDetails([FromBody] UserDetailsModel userDetails)
-        {
-            try
-            {
-                var result = this.manager.AddUserDetails(userDetails);
-                if (result)
-                {
-
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New UserDetails Successfully !" });
-                }
-                else
-                {
-
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to add user Details, Try again" });
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
-
-            }
-        }
-        [HttpGet]
-        [Route("getUserAddress")]
-        public IActionResult getUserAddress(int userId)
-        {
-            var result = this.manager.GetUserDetails(userId);
-            try
-            {
-                if (result.Count>0)
-                {
-                    return this.Ok(new  { Status = true, Message = "Address successfully retrived" ,Data=result});
-
-                }
-                else
-                {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "No address available" });
-                }
-            }
-            catch (Exception e)
-            {
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
-            }
-        }
-        [HttpPost]
-        [Route("EditAddress")]
-        public IActionResult EditAddress([FromBody]UserDetailsModel details)
-        {
-            var result = this.manager.EditAddress(details);
-            try
-            {
-                if (result)
-                {
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Address updated successfully"});
-
-                }
-                else
-                {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Address updation fails" });
-                }
-            }
-            catch (Exception e)
-            {
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
-            }
-        }
+       
         [HttpPost]
         [Route("EditUserDetails")]
         public IActionResult EditUserDetails([FromBody] RegisterModel details)

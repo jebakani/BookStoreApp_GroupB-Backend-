@@ -67,40 +67,6 @@ namespace Manager.Manager
 
         }
 
-        public bool AddUserDetails(UserDetailsModel userDetails)
-        {
-            try
-            {
-                return this.repository.AddUserDetails(userDetails);
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public List<UserDetailsModel> GetUserDetails(int userId)
-        {
-            try
-            {
-                return this.repository.GetUserDetails(userId);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public  bool EditAddress(UserDetailsModel details)
-        {
-            try
-            {
-                return this.repository.EditAddress(details);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
        public bool EditUserDetails(RegisterModel details)
         {
             try

@@ -14,10 +14,6 @@ namespace Repository.Interface
         DataResponseModel ForgetPassword(string email);
 
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
-
-        public bool AddUserDetails(UserDetailsModel userDetails);
-        List<UserDetailsModel>  GetUserDetails(int userId);
-        bool EditAddress(UserDetailsModel details);
         bool EditUserDetails(RegisterModel details);
 
         string GenerateToken(string email);
