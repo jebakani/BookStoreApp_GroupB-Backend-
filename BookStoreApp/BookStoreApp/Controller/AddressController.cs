@@ -20,12 +20,12 @@ namespace BookStoreApp.Controller
 
         }
         [HttpPost]
-        [Route("Adduserdetails")]
-        public IActionResult AddUserDetails([FromBody] AddressModel userDetails)
+        [Route("AddUserAddress")]
+        public IActionResult AddUserAddress([FromBody] AddressModel userDetails)
         {
             try
             {
-                var result = this.manager.AddUserDetails(userDetails);
+                var result = this.manager.AddUserAddress(userDetails);
                 if (result)
                 {
 

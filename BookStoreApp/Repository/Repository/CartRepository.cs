@@ -99,8 +99,8 @@ namespace Repository.Repository
                             CartModel cart = new CartModel();
                             BooksModel book = new BooksModel();
                             cart.BookID = Convert.ToInt32(reader[0]);
-                            book.AuthorName = reader[1].ToString();
-                            book.BookName = reader[2].ToString();
+                            book.BookName = reader[1].ToString();
+                            book.AuthorName = reader[2].ToString();
                             book.Price = Convert.ToInt32(reader[3]);
                             book.Image = reader[8].ToString();
                             book.OriginalPrice = Convert.ToInt32(reader[4]);

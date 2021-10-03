@@ -14,11 +14,11 @@ namespace Manager.Manager
             {
                 this.repository = repository;
             }
-            public bool AddUserDetails(AddressModel userDetails)
+            public bool AddUserAddress(AddressModel userDetails)
             {
                 try
                 {
-                    return this.repository.AddUserDetails(userDetails);
+                    return this.repository.AddUserAddress(userDetails);
 
                 }
                 catch (Exception e)

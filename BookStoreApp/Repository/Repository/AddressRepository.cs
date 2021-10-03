@@ -17,7 +17,7 @@ namespace Repository.Repository
         }
         public IConfiguration Configuration { get; }
         SqlConnection sqlConnection;
-        public bool AddUserDetails(AddressModel userDetails)
+        public bool AddUserAddress(AddressModel userDetails)
         {
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
 

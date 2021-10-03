@@ -39,11 +39,12 @@ namespace BookStoreApp
             services.AddTransient<IBookManager, BookManager>();
             services.AddTransient<ICartManager, CartManager>();
             services.AddTransient<ICartRepository, CartRepository>();
-
             services.AddTransient<IWishListManager, WishListManager>();
             services.AddTransient<IWishListRepository, WishListRepository>();
             services.AddTransient<IOrderManager, OrderManager>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IAddressManager, AddressManager>();
+            services.AddTransient<IAddressRepository, AddressRepository>();
 
             services.AddCors(options => 
             {
