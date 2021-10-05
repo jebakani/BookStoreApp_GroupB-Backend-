@@ -337,7 +337,7 @@ namespace Repository.Repository
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                if(loginData.Email.Equals("admin123@gmail.com")&&loginData.Password.Equals("abcd1234"))
+                if(loginData.Email.Equals("admin123@gmail.com") && loginData.Password.Equals("abcd1234"))
                 {
                     AdminModel admin = new AdminModel();
                     admin.Email = loginData.Email;

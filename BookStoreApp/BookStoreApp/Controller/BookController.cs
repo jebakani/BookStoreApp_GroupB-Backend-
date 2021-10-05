@@ -1,5 +1,6 @@
 
 using Manager.Inteface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using System;
@@ -140,6 +141,32 @@ namespace BookStoreApp.Controller
 
             }
         }
+        [HttpPut]
+        [Route("AddImage")]
+        public IActionResult AddImage(IFormFile image)
+        {
+            try
+            {
+                var result = this.manager.AddImage(image);
+                if (!result.Equals("no image added"))
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added Image Successfully !",Data=result });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to add Image, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
+
 
     }
 }

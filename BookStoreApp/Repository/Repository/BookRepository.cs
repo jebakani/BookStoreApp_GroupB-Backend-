@@ -1,5 +1,9 @@
-﻿using Manager.Inteface;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Manager.Inteface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Binder;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -208,6 +212,26 @@ namespace Repository.Repository
             finally
             {
                 sqlConnection.Close();
+            }
+        }
+        public string AddImage( IFormFile image)
+        {
+            try
+            {
+                Account account = new Account(this.Configuration.GetValue<string>("CloudConfiguration:CloudName"), this.Configuration.GetValue<string>("CloudConfiguration:APIKey"), this.Configuration.GetValue<string>("CloudConfiguration:APISecret"));
+                var cloudinary = new Cloudinary(account);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(image.FileName, image.OpenReadStream()),
+                };
+
+                var uploadResult = cloudinary.Upload(uploadParams);
+                string imagePath = uploadResult.Url.ToString();
+                return imagePath;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

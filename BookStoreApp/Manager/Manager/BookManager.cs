@@ -1,4 +1,5 @@
 ﻿using Manager.Inteface;
+using Microsoft.AspNetCore.Http;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,17 @@ namespace Manager.Manager
             }
         }
 
+       public string AddImage(IFormFile image)
+        {
+            try
+            {
+                return this.repository.AddImage(image);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }
