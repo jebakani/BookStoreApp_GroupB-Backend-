@@ -89,12 +89,6 @@ namespace Repository.Repository
 
                 RegisterModel customer = new RegisterModel();
                 SqlDataReader rd = cmd.ExecuteReader();
-                //var result = (int)returnedSQLParameter.Value;
-
-                //if ( result.Equals(3))
-                //{
-                //    throw new Exception("Email not registered");
-                //}
                 if (rd.Read())
                 {
                     customer.CustomerId = rd.GetInt32("userId");
@@ -102,8 +96,12 @@ namespace Repository.Repository
                     customer.PhoneNumber = rd.GetInt64("Phone").ToString();
                     customer.Email =rd.GetString("EmailId");
                     customer.Password =rd.GetString("Password");
+                    return customer;
                 }
-                return customer;
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
@@ -328,6 +326,39 @@ namespace Repository.Repository
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
             return handler.WriteToken(token);
+        }
+        public AdminModel AdminLogin(LoginModel loginData)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            try
+            {
+                sqlConnection.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[UserLogin]", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                if(loginData.Email.Equals("admin123@gmail.com")&&loginData.Password.Equals("abcd1234"))
+                {
+                    AdminModel admin = new AdminModel();
+                    admin.Email = loginData.Email;
+                    admin.AdminName = "Administrator";
+                    admin.ContactNumber = "8654259546";
+                    return admin;
+
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
         }
     }
 }

@@ -37,7 +37,17 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
-
+        public AdminModel AdminLogin(LoginModel loginData)
+         {
+            try
+            {
+                return this.repository.AdminLogin(loginData);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public bool ResetPassword(ResetPasswordModel resetPasswordModel)
         {
             try
