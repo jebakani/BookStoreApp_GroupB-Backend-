@@ -51,28 +51,14 @@ namespace BookStoreApp.Controller
         [Route("login")]
         public IActionResult Login([FromBody] LoginModel loginData)
         {
-            RegisterModel UserResult=null;
-            AdminModel AdminResult = null;
-            if (loginData.IsAdmin)
-            {
-                 AdminResult = this.manager.AdminLogin(loginData);
+            var result = this.manager.Login(loginData);
 
-            }
-            else
-            {
-                 UserResult = this.manager.Login(loginData);
-            }
             string resultMessage = this.manager.GenerateToken(loginData.Email);
             try
             {
-                if (AdminResult != null)
+                if (result != null)
                 {
-                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = AdminResult, resultMessage });
-
-                }
-                else if(UserResult!=null)
-                {
-                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = UserResult, resultMessage });
+                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = result, resultMessage });
 
                 }
                 else

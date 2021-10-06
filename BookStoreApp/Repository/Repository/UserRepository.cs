@@ -86,17 +86,39 @@ namespace Repository.Repository
                 cmd.Parameters.AddWithValue("@Password", encodedpassword);
                 var returnedSQLParameter = cmd.Parameters.Add("@result", SqlDbType.Int);
                 returnedSQLParameter.Direction = ParameterDirection.Output;
-
-                RegisterModel customer = new RegisterModel();
-                SqlDataReader rd = cmd.ExecuteReader();
-                if (rd.Read())
+                cmd.ExecuteNonQuery();
+                var result = cmd.Parameters["@result"].Value;
+                if (result.Equals(1))
                 {
-                    customer.CustomerId = rd.GetInt32("userId");
-                    customer.CustomerName =rd.GetString("FullName");
-                    customer.PhoneNumber = rd.GetInt64("Phone").ToString();
-                    customer.Email =rd.GetString("EmailId");
-                    customer.Password =rd.GetString("Password");
-                    return customer;
+                    RegisterModel customer = new RegisterModel();
+                    SqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.Read())
+                    {
+                        customer.CustomerId = rd.GetInt32("userId");
+                        customer.CustomerName = rd.GetString("FullName");
+                        customer.PhoneNumber = rd.GetInt64("Phone").ToString();
+                        customer.Email = rd.GetString("EmailId");
+                        customer.Password = rd.GetString("Password");
+                        customer.ISAdmin = false;
+                        return customer;
+                    }
+                    return null;
+                }
+                else if(result.Equals(3))
+                {
+                    RegisterModel Admin = new RegisterModel();
+                    SqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.Read())
+                    {
+                        Admin.CustomerId = rd.GetInt32(0);
+                        Admin.CustomerName = rd.GetString(1);
+                        Admin.PhoneNumber = rd.GetInt64(4).ToString();
+                        Admin.Email = rd.GetString(2);
+                        Admin.Password = rd.GetString(3);
+                        Admin.ISAdmin = true;
+                        return Admin;
+                    }
+                    return null;
                 }
                 else
                 {
@@ -326,42 +348,6 @@ namespace Repository.Repository
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
             return handler.WriteToken(token);
-        }
-        public AdminModel AdminLogin(LoginModel loginData)
-        {
-            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
-            try
-            {
-                sqlConnection.Open();
-                SqlCommand cmd = new SqlCommand("[dbo].[LoginAdmin]", sqlConnection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-                cmd.Parameters.AddWithValue("@AdminMail", loginData.Email);
-                cmd.Parameters.AddWithValue("@Passwords", loginData.Password);
-                AdminModel admin = new AdminModel();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    admin.AdminName = reader.GetString("AdminName");
-                    admin.ContactNumber= reader.GetInt64("Contact").ToString();
-                    admin.Email = reader.GetString("AdminMail");
-                    admin.Password = reader.GetString("Passwords");
-                    return admin;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            finally
-            {
-                sqlConnection.Close();
-            }
         }
     }
 }

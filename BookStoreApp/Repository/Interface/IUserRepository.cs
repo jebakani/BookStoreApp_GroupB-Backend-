@@ -12,7 +12,6 @@ namespace Repository.Interface
         RegisterModel Login(LoginModel loginData);
 
         DataResponseModel ForgetPassword(string email);
-        public AdminModel AdminLogin(LoginModel loginData);
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
         bool EditUserDetails(RegisterModel details);
 
