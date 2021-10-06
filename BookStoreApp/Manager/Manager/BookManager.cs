@@ -103,5 +103,17 @@ namespace Manager.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool RemoveBookByAdmin(int bookId)
+        {
+            try
+            {
+                return this.repository.RemoveBookByAdmin(bookId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

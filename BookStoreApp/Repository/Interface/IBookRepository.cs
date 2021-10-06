@@ -15,5 +15,6 @@ namespace Manager.Inteface
         List<FeedbackModel> GetCustomerFeedBack(int bookid);
         string AddImage(IFormFile image);
         bool EditBookDetails(BooksModel bookDetails);
+        public bool RemoveBookByAdmin(int bookId);
     }
 }

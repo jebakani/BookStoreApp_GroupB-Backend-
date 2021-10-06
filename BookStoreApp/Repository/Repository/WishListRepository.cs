@@ -34,10 +34,9 @@ namespace Repository.Repository
                     
                     sqlCommand.Parameters.AddWithValue("@BookId", wishListModel.BookId);
                     sqlCommand.Parameters.AddWithValue("@UserId", wishListModel.UserId);
-                    var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
-                    returnedSQLParameter.Direction = ParameterDirection.Output;
-                     sqlCommand.ExecuteNonQuery();
-                    var result = (int)returnedSQLParameter.Value;
+                  
+                     
+                    var result = sqlCommand.ExecuteNonQuery();
 
                     if (result > 0)
                         return true;

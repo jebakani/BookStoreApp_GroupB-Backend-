@@ -116,6 +116,31 @@ namespace BookStoreApp.Controller
 
             }
         }
+        [HttpDelete]
+        [Route("RemoveBooks")]
+        public IActionResult RemoveBooks(int wishListId)
+        {
+            try
+            {
+                var result = this.manager.RemoveBookByAdmin(wishListId);
+                if (result)
+                {
+
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Removed Book Successfully !" });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to Remove Book, Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
 
         [HttpPost]
         [Route("GetFeedback")]
