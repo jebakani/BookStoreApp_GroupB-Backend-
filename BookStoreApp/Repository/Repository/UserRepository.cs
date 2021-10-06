@@ -333,18 +333,21 @@ namespace Repository.Repository
             try
             {
                 sqlConnection.Open();
-                SqlCommand cmd = new SqlCommand("[dbo].[UserLogin]", sqlConnection)
+                SqlCommand cmd = new SqlCommand("[dbo].[LoginAdmin]", sqlConnection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                if(loginData.Email.Equals("admin123@gmail.com") && loginData.Password.Equals("abcd1234"))
+                cmd.Parameters.AddWithValue("@AdminMail", loginData.Email);
+                cmd.Parameters.AddWithValue("@Passwords", loginData.Password);
+                AdminModel admin = new AdminModel();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
                 {
-                    AdminModel admin = new AdminModel();
-                    admin.Email = loginData.Email;
-                    admin.AdminName = "Administrator";
-                    admin.ContactNumber = "8654259546";
+                    admin.AdminName = reader.GetString("AdminName");
+                    admin.ContactNumber= reader.GetInt64("Contact").ToString();
+                    admin.Email = reader.GetString("AdminMail");
+                    admin.Password = reader.GetString("Passwords");
                     return admin;
-
                 }
                 else
                 {

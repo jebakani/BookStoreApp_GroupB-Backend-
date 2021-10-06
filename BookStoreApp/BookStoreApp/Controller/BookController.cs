@@ -44,7 +44,7 @@ namespace BookStoreApp.Controller
             }
         }
         [HttpPost]
-        [Route("Add")]
+        [Route("AddBook")]
         public IActionResult AddBook([FromBody] BooksModel bookDetails)
         {
             try
@@ -166,7 +166,31 @@ namespace BookStoreApp.Controller
 
             }
         }
+        [HttpPut]
+        [Route("UpdateBook")]
+        public IActionResult EditBook(BooksModel Bookdetail)
+        {
+            try
+            {
+                var result = this.manager.EditBookDetails(Bookdetail);
+                if (result)
+                {
 
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Book updated  Successfully !" });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to updated Book , Try again" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+
+            }
+        }
 
     }
 }

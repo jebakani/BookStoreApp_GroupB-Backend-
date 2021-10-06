@@ -34,5 +34,6 @@ BEGIN TRY
      end
 END TRY
 BEGIN CATCH  
+   set @result=0;
 END CATCH;
 End

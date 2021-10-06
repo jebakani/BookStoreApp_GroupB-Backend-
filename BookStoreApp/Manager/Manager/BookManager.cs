@@ -92,6 +92,16 @@ namespace Manager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
+       public bool EditBookDetails(BooksModel bookDetails)
+        {
+            try
+            {
+                return this.repository.EditBookDetails(bookDetails);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

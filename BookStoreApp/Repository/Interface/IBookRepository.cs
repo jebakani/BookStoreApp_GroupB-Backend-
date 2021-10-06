@@ -14,5 +14,6 @@ namespace Manager.Inteface
         bool AddCustomerFeedBack(FeedbackModel feedbackModel);
         List<FeedbackModel> GetCustomerFeedBack(int bookid);
         string AddImage(IFormFile image);
+        bool EditBookDetails(BooksModel bookDetails);
     }
 }

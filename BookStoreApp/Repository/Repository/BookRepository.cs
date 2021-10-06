@@ -234,5 +234,47 @@ namespace Repository.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool EditBookDetails(BooksModel bookDetails)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+
+            using (sqlConnection)
+
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.UpdateBook", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@BookId", bookDetails.BookId);
+                    sqlCommand.Parameters.AddWithValue("@BookName", bookDetails.BookName);
+                    sqlCommand.Parameters.AddWithValue("@AuthorName", bookDetails.AuthorName);
+                    sqlCommand.Parameters.AddWithValue("@Price", bookDetails.Price);
+                    sqlCommand.Parameters.AddWithValue("@originalPrice", bookDetails.OriginalPrice);
+                    sqlCommand.Parameters.AddWithValue("@BookDescription", bookDetails.BookDescription);
+                    sqlCommand.Parameters.AddWithValue("@Image", bookDetails.Image);
+                    sqlCommand.Parameters.AddWithValue("@Rating", bookDetails.Rating);
+                    sqlCommand.Parameters.AddWithValue("@BookCount", bookDetails.BookCount);
+                    sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = sqlCommand.Parameters["@result"].Value;
+                    if (result.Equals(1))
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
     }
 }

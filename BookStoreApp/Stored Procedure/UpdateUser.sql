@@ -6,7 +6,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-create PROCEDURE [dbo].[UpdateUser]
+Alter PROCEDURE [dbo].[UpdateUser]
 (
     @userId int,
     @FullName varchar(255),
@@ -35,5 +35,6 @@ BEGIN TRY
 		  end
 END TRY
 BEGIN CATCH 
+set @result=0;
 END CATCH
 END
