@@ -1,6 +1,6 @@
 ﻿USE [BookStore]
 GO
-/****** Object:  StoredProcedure [dbo].[UserLogin]    Script Date: 9/28/2021 8:05:41 AM ******/
+/****** Object:  StoredProcedure [dbo].[UserLogin]    Script Date: 10/7/2021 8:08:01 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -14,8 +14,22 @@ BEGIN
 BEGIN TRY
    set @result=0;
    
-     IF(EXISTS(SELECT * FROM Users WHERE EmailId=@EmailId))
+   
+	 if(EXISTS(SELECT * FROM Admin WHERE AdminMail=@EmailId))
 	 begin
+	   if (Exists (select * from Admin Where AdminMail=@EmailId and Passwords=@Password))
+	     begin
+		  set @result=3 ;
+		  select * from Admin Where AdminMail=@EmailId
+      	end
+	   else
+	     begin
+		   set @result=2;
+		   THROW  52000, 'Incorrect Password', 1;
+		 end
+   	 end
+	 else IF(EXISTS(SELECT * FROM Users WHERE EmailId=@EmailId))
+	    begin
 	   if (Exists (select * from Users Where EmailId=@EmailId and Password=@Password))
 	     begin
 		  set @result=1 ;
@@ -27,9 +41,9 @@ BEGIN TRY
 		   THROW  52000, 'Incorrect Password', 1;
 		 end
    	 end
-	 ELSE
+	 else
 	 begin
-	   set @result=3;
+	   set @result=4;
 	   THROW 52000, 'Invalid Email id', 1;
      end
 END TRY
