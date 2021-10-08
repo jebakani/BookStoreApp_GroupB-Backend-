@@ -13,5 +13,6 @@ namespace Model
         [DefaultValue(1)]
         public int BookOrderCount { get; set; }
         public BooksModel Books { get; set; }
+        public bool type { get; set; }
     }
 }

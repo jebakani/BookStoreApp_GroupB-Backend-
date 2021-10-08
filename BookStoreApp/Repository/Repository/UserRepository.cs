@@ -9,7 +9,9 @@ using System.Text;
 using Experimental.System.Messaging;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Repository.Repository
 {
@@ -84,24 +86,44 @@ namespace Repository.Repository
                 cmd.Parameters.AddWithValue("@Password", encodedpassword);
                 var returnedSQLParameter = cmd.Parameters.Add("@result", SqlDbType.Int);
                 returnedSQLParameter.Direction = ParameterDirection.Output;
-
-                RegisterModel customer = new RegisterModel();
-                SqlDataReader rd = cmd.ExecuteReader();
-                //var result = (int)returnedSQLParameter.Value;
-
-                //if ( result.Equals(3))
-                //{
-                //    throw new Exception("Email not registered");
-                //}
-                if (rd.Read())
+                cmd.ExecuteNonQuery();
+                var result = cmd.Parameters["@result"].Value;
+                if (result.Equals(1))
                 {
-                    customer.CustomerId = rd.GetInt32("userId");
-                    customer.CustomerName =rd.GetString("FullName");
-                    customer.PhoneNumber = rd.GetInt64("Phone").ToString();
-                    customer.Email =rd.GetString("EmailId");
-                    customer.Password =rd.GetString("Password");
+                    RegisterModel customer = new RegisterModel();
+                    SqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.Read())
+                    {
+                        customer.CustomerId = rd.GetInt32("userId");
+                        customer.CustomerName = rd.GetString("FullName");
+                        customer.PhoneNumber = rd.GetInt64("Phone").ToString();
+                        customer.Email = rd.GetString("EmailId");
+                        customer.Password = rd.GetString("Password");
+                        customer.ISAdmin = false;
+                        return customer;
+                    }
+                    return null;
                 }
-                return customer;
+                else if(result.Equals(3))
+                {
+                    RegisterModel Admin = new RegisterModel();
+                    SqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.Read())
+                    {
+                        Admin.CustomerId = rd.GetInt32(0);
+                        Admin.CustomerName = rd.GetString(1);
+                        Admin.PhoneNumber = rd.GetInt64(4).ToString();
+                        Admin.Email = rd.GetString(2);
+                        Admin.Password = rd.GetString(3);
+                        Admin.ISAdmin = true;
+                        return Admin;
+                    }
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
@@ -275,121 +297,6 @@ namespace Repository.Repository
                     sqlConnection.Close();
                 }
         }
-
-        public bool AddUserDetails(AddressModel userDetails)
-        {
-            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
-
-            using (sqlConnection)
-
-                try
-                {
-                    
-                    SqlCommand sqlCommand = new SqlCommand("dbo.UserDetailsInsert", sqlConnection);
-
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    sqlConnection.Open();
-
-                    sqlCommand.Parameters.AddWithValue("@address",userDetails.Address);
-                    sqlCommand.Parameters.AddWithValue("@city", userDetails.City);
-                    sqlCommand.Parameters.AddWithValue("@state", userDetails.State);
-                    sqlCommand.Parameters.AddWithValue("@type", userDetails.Type);
-                    sqlCommand.Parameters.AddWithValue("@userId", userDetails.UserId);
-
-                    int result = sqlCommand.ExecuteNonQuery();
-                    if (result > 0)
-                        return true;
-                    else
-                        return false;
-
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
-                finally
-                {
-                    sqlConnection.Close();
-                }
-        }
-        public List<AddressModel> GetUserDetails(int userId)
-        {
-            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
-
-            try
-            {
-                sqlConnection.Open();
-                SqlCommand cmd = new SqlCommand("[dbo].[GetUSerDetails]" ,sqlConnection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                SqlDataReader readData = cmd.ExecuteReader();
-                List<AddressModel> userdetaillist = new List<AddressModel>();
-                if (readData.HasRows)
-                {
-                    while (readData.Read())
-                    {
-                        AddressModel userDetail = new AddressModel();
-                        userDetail.AddressId = readData.GetInt32("AddressId");
-                        userDetail.Address = readData.GetString("address");
-                        userDetail.City = readData.GetString("city").ToString();
-                        userDetail.State = readData.GetString("state");
-                        userDetail.Type = readData.GetString("type");
-                        userdetaillist.Add(userDetail);
-                    }
-                }
-                return userdetaillist;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-             finally
-                {
-                    sqlConnection.Close();
-                }
-        }
-        public bool EditAddress(AddressModel userDetails)
-        {
-            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
-
-            using (sqlConnection)
-
-                try
-                {
-
-                    SqlCommand sqlCommand = new SqlCommand("dbo.UpdateUserDetails", sqlConnection);
-
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    sqlConnection.Open();
-
-                    sqlCommand.Parameters.AddWithValue("@address", userDetails.Address);
-                    sqlCommand.Parameters.AddWithValue("@city", userDetails.City);
-                    sqlCommand.Parameters.AddWithValue("@state", userDetails.State);
-                    sqlCommand.Parameters.AddWithValue("@type", userDetails.Type);
-                    sqlCommand.Parameters.AddWithValue("@addressID", userDetails.AddressId);
-                    sqlCommand.Parameters.Add("@result", SqlDbType.Int);
-                    sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
-                    sqlCommand.ExecuteNonQuery();
-                    var result = sqlCommand.Parameters["@result"].Value;
-                    if (result.Equals(1))
-                        return true;
-                    else
-                        return false;
-
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
-                finally
-                {
-                    sqlConnection.Close();
-                }
-        }
         public bool EditUserDetails(RegisterModel details)
         {
             sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
@@ -426,6 +333,21 @@ namespace Repository.Repository
                 {
                     sqlConnection.Close();
                 }
+        }
+
+        public string GenerateToken(string email)
+        {
+            var key = Encoding.UTF8.GetBytes(this.Configuration["SecretKey"]);
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
+            SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
+            return handler.WriteToken(token);
         }
     }
 }

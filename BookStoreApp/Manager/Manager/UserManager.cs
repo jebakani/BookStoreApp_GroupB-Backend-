@@ -37,7 +37,7 @@ namespace Manager.Manager
                 throw new Exception(e.Message);
             }
         }
-
+     
         public bool ResetPassword(ResetPasswordModel resetPasswordModel)
         {
             try
@@ -66,42 +66,8 @@ namespace Manager.Manager
 
 
         }
-
-        public bool AddUserDetails(AddressModel userDetails)
-        {
-            try
-            {
-                return this.repository.AddUserDetails(userDetails);
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public List<AddressModel> GetUserDetails(int userId)
-        {
-            try
-            {
-                return this.repository.GetUserDetails(userId);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public  bool EditAddress(AddressModel details)
-        {
-            try
-            {
-                return this.repository.EditAddress(details);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
        public bool EditUserDetails(RegisterModel details)
+
         {
             try
             {
@@ -110,6 +76,18 @@ namespace Manager.Manager
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+
+        public string GenerateToken(string email)
+        {
+            try
+            {
+                return this.repository.GenerateToken(email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

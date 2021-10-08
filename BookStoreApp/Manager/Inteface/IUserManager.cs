@@ -15,11 +15,10 @@ namespace Manager.Inteface
         DataResponseModel ForgetPassword(string email);
 
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
-        public bool AddUserDetails(AddressModel userDetails);
-
-        List<AddressModel> GetUserDetails(int userId);
-        bool EditAddress(AddressModel details);
+      
         bool EditUserDetails(RegisterModel details);
+
+        string GenerateToken(string email);
 
     }
 }

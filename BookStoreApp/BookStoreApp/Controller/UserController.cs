@@ -52,11 +52,13 @@ namespace BookStoreApp.Controller
         public IActionResult Login([FromBody] LoginModel loginData)
         {
             var result = this.manager.Login(loginData);
+
+            string resultMessage = this.manager.GenerateToken(loginData.Email);
             try
             {
-                if (result.CustomerId>0)
+                if (result != null)
                 {
-                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = result });
+                    return this.Ok(new { Status = true, Message = "Login Successful !", Data = result, resultMessage });
 
                 }
                 else
@@ -69,8 +71,8 @@ namespace BookStoreApp.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
-        [HttpPost]
 
+        [HttpPost]
         [Route("forgetPassword")]
         public IActionResult ForgetPassword(string email)
         {
@@ -118,75 +120,6 @@ namespace BookStoreApp.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
 
-        }
-        [HttpPost]
-        [Route("Adduserdetails")]
-        public IActionResult AddUserDetails([FromBody] AddressModel userDetails)
-        {
-            try
-            {
-                var result = this.manager.AddUserDetails(userDetails);
-                if (result)
-                {
-
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Added New UserDetails Successfully !" });
-                }
-                else
-                {
-
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to add user Details, Try again" });
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
-
-            }
-        }
-        [HttpGet]
-        [Route("getUserAddress")]
-        public IActionResult getUserAddress(int userId)
-        {
-            var result = this.manager.GetUserDetails(userId);
-            try
-            {
-                if (result.Count>0)
-                {
-                    return this.Ok(new  { Status = true, Message = "Address successfully retrived" ,Data=result});
-
-                }
-                else
-                {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "No address available" });
-                }
-            }
-            catch (Exception e)
-            {
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
-            }
-        }
-        [HttpPost]
-        [Route("EditAddress")]
-        public IActionResult EditAddress([FromBody]AddressModel details)
-        {
-            var result = this.manager.EditAddress(details);
-            try
-            {
-                if (result)
-                {
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Address updated successfully"});
-
-                }
-                else
-                {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Address updation fails" });
-                }
-            }
-            catch (Exception e)
-            {
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
-            }
         }
         [HttpPost]
         [Route("EditUserDetails")]

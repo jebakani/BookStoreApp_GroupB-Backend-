@@ -1,4 +1,5 @@
 ﻿using Manager.Inteface;
+using Microsoft.AspNetCore.Http;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,67 @@ namespace Manager.Manager
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+
+        public bool AddCustomerFeedBack(FeedbackModel feedbackModel)
+        {
+            try
+            {
+                return this.repository.AddCustomerFeedBack(feedbackModel);
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public List<FeedbackModel> GetCustomerFeedBack(int bookid)
+        {
+
+            try
+            {
+                return this.repository.GetCustomerFeedBack(bookid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+       public string AddImage(IFormFile image)
+        {
+            try
+            {
+                return this.repository.AddImage(image);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+       public bool EditBookDetails(BooksModel bookDetails)
+        {
+            try
+            {
+                return this.repository.EditBookDetails(bookDetails);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool RemoveBookByAdmin(int bookId)
+        {
+            try
+            {
+                return this.repository.RemoveBookByAdmin(bookId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

@@ -1,8 +1,13 @@
-﻿using Manager.Inteface;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Manager.Inteface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Binder;
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -137,6 +142,176 @@ namespace Repository.Repository
                 {
                     sqlConnection.Close();
                 }
+        }
+
+        public bool AddCustomerFeedBack(FeedbackModel feedbackModel)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.AddFeedback", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@BookId", feedbackModel.bookId);
+                    sqlCommand.Parameters.AddWithValue("@UserId", feedbackModel.userId);
+                    sqlCommand.Parameters.AddWithValue("@Rating", feedbackModel.rating);
+                    sqlCommand.Parameters.AddWithValue("@FeedBack", feedbackModel.feedback);
+
+
+                    int result = sqlCommand.ExecuteNonQuery();
+
+                    if (result > 0)
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+        public List<FeedbackModel> GetCustomerFeedBack(int bookid)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            try
+            {
+                sqlConnection.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[GetCustomerFeedback]", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@bookid", bookid);
+                List<FeedbackModel> feedbackList = new List<FeedbackModel>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        FeedbackModel feedbackdetails = new FeedbackModel();
+                        feedbackdetails.userId = reader.GetInt32(0);
+                        feedbackdetails.customerName = reader.GetString("FullName");
+                        feedbackdetails.feedback = reader.GetString("Feedback");
+                        feedbackdetails.rating = reader.GetDouble("Rating");
+                        feedbackList.Add(feedbackdetails);
+                    }
+
+                }
+                return feedbackList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        public string AddImage( IFormFile image)
+        {
+            try
+            {
+                Account account = new Account(this.Configuration.GetValue<string>("CloudConfiguration:CloudName"), this.Configuration.GetValue<string>("CloudConfiguration:APIKey"), this.Configuration.GetValue<string>("CloudConfiguration:APISecret"));
+                var cloudinary = new Cloudinary(account);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(image.FileName, image.OpenReadStream()),
+                };
+
+                var uploadResult = cloudinary.Upload(uploadParams);
+                string imagePath = uploadResult.Url.ToString();
+                return imagePath;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool EditBookDetails(BooksModel bookDetails)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+
+            using (sqlConnection)
+
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.UpdateBook", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@BookId", bookDetails.BookId);
+                    sqlCommand.Parameters.AddWithValue("@BookName", bookDetails.BookName);
+                    sqlCommand.Parameters.AddWithValue("@AuthorName", bookDetails.AuthorName);
+                    sqlCommand.Parameters.AddWithValue("@Price", bookDetails.Price);
+                    sqlCommand.Parameters.AddWithValue("@originalPrice", bookDetails.OriginalPrice);
+                    sqlCommand.Parameters.AddWithValue("@BookDescription", bookDetails.BookDescription);
+                    sqlCommand.Parameters.AddWithValue("@Image", bookDetails.Image);
+                    sqlCommand.Parameters.AddWithValue("@Rating", bookDetails.Rating);
+                    sqlCommand.Parameters.AddWithValue("@BookCount", bookDetails.BookCount);
+                    sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = sqlCommand.Parameters["@result"].Value;
+                    if (result.Equals(1))
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+        public bool RemoveBookByAdmin(int bookId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("UserDbConnection"));
+            using (sqlConnection)
+                try
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("dbo.RemoveBookByAdmin", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+
+
+                    sqlCommand.Parameters.AddWithValue("@BookId", bookId);
+                    sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+
+                    var result = sqlCommand.Parameters["@result"].Value;
+                    if (result.Equals(1))
+                        return true;
+                    else
+                        return false;
+
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+
         }
     }
 }

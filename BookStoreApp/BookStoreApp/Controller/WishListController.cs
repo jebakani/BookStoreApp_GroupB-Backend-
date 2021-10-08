@@ -1,4 +1,5 @@
 ﻿using Manager.Inteface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using System;
@@ -8,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace BookStoreApp.Controller
 {
+    [Authorize]
+    [ApiController]
+    [Route("api/[Controller]")]
     public class WishListController : ControllerBase
     {
         private readonly IWishListManager manager;

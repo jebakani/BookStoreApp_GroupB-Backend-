@@ -3,6 +3,7 @@ using Model;
 using Repository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -33,8 +34,10 @@ namespace Repository.Repository
                     
                     sqlCommand.Parameters.AddWithValue("@BookId", wishListModel.BookId);
                     sqlCommand.Parameters.AddWithValue("@UserId", wishListModel.UserId);
+                  
+                     
+                    var result = sqlCommand.ExecuteNonQuery();
 
-                    int result = sqlCommand.ExecuteNonQuery();
                     if (result > 0)
                         return true;
                     else
@@ -112,7 +115,7 @@ namespace Repository.Repository
                             booksModel.BookName = reader["BookName"].ToString();
                             booksModel.Price = Convert.ToInt32(reader["Price"]);
                             booksModel.Image = reader["Image"].ToString();
-                            booksModel.OriginalPrice = Convert.ToInt32(reader["OrginalPrice"]);
+                            booksModel.OriginalPrice = Convert.ToInt32(reader["OriginalPrice"]);
                             wishListModel.WishListId = Convert.ToInt32(reader["WishListId"]);
                             wishListModel.Books = booksModel;
 
