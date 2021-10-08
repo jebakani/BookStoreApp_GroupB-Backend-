@@ -121,7 +121,6 @@ namespace BookStoreApp.Controller
             }
 
         }
-       
         [HttpPost]
         [Route("EditUserDetails")]
         public IActionResult EditUserDetails([FromBody] RegisterModel details)

@@ -1,17 +1,15 @@
 USE [BookStore]
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateUserDetails]    Script Date: 9/29/2021 10:54:59 AM ******/
+/****** Object:  StoredProcedure [dbo].[UpdateUser]    Script Date: 9/30/2021 10:04:34 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-Alter PROCEDURE [dbo].[UpdateUser]
+ALTER PROCEDURE [dbo].[UpdateUser]
 (
     @userId int,
     @FullName varchar(255),
-	@EmailId varchar(255) ,
-	@Password varchar(255) ,
 	@Phone BigInt,
 	@result int output
 )
@@ -23,8 +21,6 @@ BEGIN TRY
 		  UPDATE Users
           SET 
 		   FullName=@FullName,
-		   EmailId=@EmailId,
-		   Password=@Password,
 		   Phone=@Phone
 		  WHERE userId=@userId;
 		 set @result=1;

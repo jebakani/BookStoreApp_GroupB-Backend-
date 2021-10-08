@@ -23,7 +23,7 @@ namespace BookStoreApp.Controller
         }
         [HttpPost]
         [Route("AddToWishList")]
-        public IActionResult Register([FromBody] WishListModel wishListModel)
+        public IActionResult AddToWishList([FromBody] WishListModel wishListModel)
         {
             try
             {

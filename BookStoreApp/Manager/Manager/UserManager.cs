@@ -66,8 +66,8 @@ namespace Manager.Manager
 
 
         }
-
        public bool EditUserDetails(RegisterModel details)
+
         {
             try
             {

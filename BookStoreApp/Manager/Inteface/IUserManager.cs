@@ -15,7 +15,7 @@ namespace Manager.Inteface
         DataResponseModel ForgetPassword(string email);
 
         bool ResetPassword(ResetPasswordModel resetPasswordModel);
-
+      
         bool EditUserDetails(RegisterModel details);
 
         string GenerateToken(string email);
