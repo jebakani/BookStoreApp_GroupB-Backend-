@@ -71,8 +71,8 @@ namespace BookStoreApp.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
-        [HttpPost]
 
+        [HttpPost]
         [Route("forgetPassword")]
         public IActionResult ForgetPassword(string email)
         {

@@ -118,11 +118,11 @@ namespace BookStoreApp.Controller
         }
         [HttpDelete]
         [Route("RemoveBooks")]
-        public IActionResult RemoveBooks(int wishListId)
+        public IActionResult RemoveBooks(int BookId)
         {
             try
             {
-                var result = this.manager.RemoveBookByAdmin(wishListId);
+                var result = this.manager.RemoveBookByAdmin(BookId);
                 if (result)
                 {
 

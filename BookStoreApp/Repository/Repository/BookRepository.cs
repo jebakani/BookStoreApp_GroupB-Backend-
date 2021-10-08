@@ -291,13 +291,16 @@ namespace Repository.Repository
 
 
                     sqlCommand.Parameters.AddWithValue("@BookId", bookId);
+                    sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
 
-
-                    int result = sqlCommand.ExecuteNonQuery();
-                    if (result > 0)
+                    var result = sqlCommand.Parameters["@result"].Value;
+                    if (result.Equals(1))
                         return true;
                     else
                         return false;
+
 
                 }
                 catch (Exception e)
